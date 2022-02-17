@@ -27,28 +27,35 @@ const Grid = styled.div`
   margin-bottom: 1em;
 `;
 
-const EmptyTile = styled.div`
-  display:flex; 
+const TileFront = styled.div`
+  width:100%;
+  height:100%;
   justify-content: center;
-  background: #a6b8b9;
-  padding: 2rem;
+  background: #dddddd;
+  backface-visibility: hidden;
+  position: absolute;
+  top:0;
+`;
+
+const TileBack = styled.div`
+  width:100%;
+  height:100%;
+  justify-content: center;
+  background: #000000;
+  backface-visibility: hidden;
+  position: absolute;
+  transform: rotateY(180deg);
+  top:0;
+`;
+
+const Tile = styled.div`
   transition: 1s;
   transform-style: preserve-3d;
-  transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
-  backface-visibility: hidden;
-  position: relative;
-`;
-
-const FlagTile = styled(EmptyTile)`
-  content: ${props => props.flag};
-`;
-
-const TileContainer = styled.div`
   display:flex; 
   justify-content: center;
-  background: #a6b8b9;
   padding: 2rem;
   position: relative;
+  transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
 `;
 
 const Results = styled(({ score, attempts, ...props }) => (
@@ -96,12 +103,30 @@ function App(props) {
     <div className='App'>
       <CentreWrapper>
         <Grid>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
-            <EmptyTile rotate={attempts === 1}>1</EmptyTile>
+          <Tile rotate={attempts === 1}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
+          <Tile rotate={attempts === 2}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
+          <Tile rotate={attempts === 3}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
+          <Tile rotate={attempts === 4}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
+          <Tile rotate={attempts === 5}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
+          <Tile rotate={attempts === 6}>
+            <TileFront></TileFront>
+            <TileBack></TileBack>
+          </Tile>
         </Grid>
       <AnswerBox
         answer={name}
