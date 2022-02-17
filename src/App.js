@@ -103,27 +103,27 @@ function App(props) {
     <div className='App'>
       <CentreWrapper>
         <Grid>
-          <Tile rotate={attempts === 1}>
+          <Tile rotate={attempts >= 1}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
-          <Tile rotate={attempts === 2}>
+          <Tile rotate={attempts >= 2}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
-          <Tile rotate={attempts === 3}>
+          <Tile rotate={attempts >= 3}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
-          <Tile rotate={attempts === 4}>
+          <Tile rotate={attempts >= 4}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
-          <Tile rotate={attempts === 5}>
+          <Tile rotate={attempts >= 5}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
-          <Tile rotate={attempts === 6}>
+          <Tile rotate={attempts >= 6}>
             <TileFront></TileFront>
             <TileBack></TileBack>
           </Tile>
