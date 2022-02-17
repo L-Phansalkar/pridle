@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import flags from './flags';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App flags={flags} attempts={9}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
