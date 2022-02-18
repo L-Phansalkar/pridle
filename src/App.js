@@ -22,7 +22,7 @@ const Grid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
   grid-gap: 2px;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 `;
 
 const TileFront = styled.div`
@@ -67,16 +67,26 @@ const FlagImage = styled.img`
 
 const Results = styled(({ score, attempts, ...props }) => (
   <div {...props}>
-    Score: <span>{score}</span>, Attempts: <span>{attempts}</span>
+    Attempts: <span>{attempts}</span>
   </div>
 ))`
   display: block;
   font-size: 1.5em;
+  font-family: monospace;
   span {
     font-weight: bold;
   }
 `;
 
+const Title = styled.div`
+  display: block;
+  font-size: 5em;
+  font-family: monospace;
+  margin-bottom: 1rem;
+  span {
+    color: #23b21a;
+  }
+`;
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
 function App(props) {
@@ -112,6 +122,7 @@ function App(props) {
   return (
     <div className='App'>
       <CentreWrapper>
+        <Title>NATION<span>LE</span></Title>
         <Grid>
           {[0,1,2,3,4,5].map(n => 
           (
