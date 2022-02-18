@@ -65,9 +65,9 @@ const FlagImage = styled.img`
   top: ${props => props.top};
 `;
 
-const Results = styled(({ score, attempts, ...props }) => (
+const Results = styled(({ score, attempts, max, ...props }) => (
   <div {...props}>
-    Attempts: <span>{attempts}</span>
+    Attempts: <span>{attempts}/{max}</span>
   </div>
 ))`
   display: block;
@@ -129,12 +129,13 @@ function App(props) {
   };
 
   const onIncorrect = () => {
-    if (attempts < props.attempts) {
+    if (attempts < props.attempts - 1) {
       setAttempts(attempts + 1);
       revealTile();
       // TODO reveal tile
       return;
     }
+    setAttempts(attempts + 1);
     setEnd(true);
     setScore(10);
   };
@@ -167,7 +168,7 @@ function App(props) {
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
       />
-      <Results score={score} attempts={attempts} />
+      <Results score={score} attempts={attempts} max={props.attempts}/>
       </CentreWrapper>
     </div>
   );
