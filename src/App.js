@@ -86,6 +86,7 @@ function App(props) {
 
   const nextFlag = () => {
     setFlagKeys(flagKeys.length > 1 ? flagKeys.slice(1) : shuffle(Object.keys(props.flagCodes)));
+    setAttempts(0);
   };
 
   const onCorrect = () => {
