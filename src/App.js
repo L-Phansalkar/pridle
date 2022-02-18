@@ -87,6 +87,16 @@ const Title = styled.div`
     color: #23b21a;
   }
 `;
+
+const EndScreen = styled(CentreWrapper)`
+  transition: 1s;
+  opacity:${props => props.end ? 0.8 : 0};
+  z-index:${props => props.end ? 2 : -1};
+  background-color: #dddddd;
+  font-family: Courier, monospace;
+  font-size: 1.5em;
+`;
+
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
 function App(props) {
@@ -95,6 +105,7 @@ function App(props) {
   const [attempts, setAttempts] = useState(0);
   const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false])
   const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]))
+  const [end, setEnd] = useState(false);
 
   const nextFlag = () => {
     setFlagKeys(flagKeys.length > 1 ? flagKeys.slice(1) : shuffle(Object.keys(props.flagCodes)));
@@ -104,7 +115,8 @@ function App(props) {
     setScore(attempts);
     // TODO end game and show score
     setAttempts(0);
-    setFlippedArray([true, true, true, true, true, true])
+    setFlippedArray([true, true, true, true, true, true]);
+    setEnd(true);
     // nextFlag();
   };
 
@@ -123,7 +135,7 @@ function App(props) {
       // TODO reveal tile
       return;
     }
-
+    setEnd(true);
     setScore(10);
   };
 
@@ -134,6 +146,7 @@ function App(props) {
   return (
     <div className='App'>
       <CentreWrapper>
+        <EndScreen end={end}>{countries}</EndScreen>
         <Title>FLAG<span>LE</span></Title>
         <Grid>
           {flippedArray.map((flipped, n) => 

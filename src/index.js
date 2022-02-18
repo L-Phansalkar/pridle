@@ -7,7 +7,7 @@ import flagCodes from './flag_codes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App flagCodes={flagCodes} attempts={9}/>
+    <App flagCodes={flagCodes} attempts={8}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
