@@ -72,7 +72,7 @@ const Results = styled(({ score, attempts, ...props }) => (
 ))`
   display: block;
   font-size: 1.5em;
-  font-family: monospace;
+  font-family: monospace, monospace;
   span {
     font-weight: bold;
   }
@@ -81,7 +81,7 @@ const Results = styled(({ score, attempts, ...props }) => (
 const Title = styled.div`
   display: block;
   font-size: 5em;
-  font-family: monospace;
+  font-family: monospace, monospace;
   margin-bottom: 1rem;
   span {
     color: #23b21a;

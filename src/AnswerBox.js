@@ -8,7 +8,7 @@ const Form = styled.form`
 `;
 
 const Placeholder = styled.span`
-  font-family: monospace;
+  font-family: monospace, monospace;
   padding: 0 0 0.2em 0.2em;
   font-size: 2em;
   letter-spacing: 0.2em;
