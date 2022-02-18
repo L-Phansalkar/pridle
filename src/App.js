@@ -96,12 +96,12 @@ function App(props) {
 
   const nextFlag = () => {
     setFlagKeys(flagKeys.length > 1 ? flagKeys.slice(1) : shuffle(Object.keys(props.flagCodes)));
-    setAttempts(0);
   };
 
   const onCorrect = () => {
     setScore(attempts);
     // TODO end game and show score
+    setAttempts(0);
     nextFlag();
   };
 
@@ -126,7 +126,7 @@ function App(props) {
         <Grid>
           {[0,1,2,3,4,5].map(n => 
           (
-            <Tile rotate={attempts >= n+1}>
+            <Tile key={n} rotate={attempts >= n+1}>
               <TileFront></TileFront>
               <TileBack><FlagImage
                 flag={`https://flagcdn.com/w320/${flagKey}.png`}
