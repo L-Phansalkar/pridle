@@ -93,6 +93,8 @@ function App(props) {
   const [flagKeys, setFlagKeys] = useState(() => shuffle(Object.keys(props.flagCodes)));
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
+  const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false])
+  const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]))
 
   const nextFlag = () => {
     setFlagKeys(flagKeys.length > 1 ? flagKeys.slice(1) : shuffle(Object.keys(props.flagCodes)));
@@ -102,12 +104,22 @@ function App(props) {
     setScore(attempts);
     // TODO end game and show score
     setAttempts(0);
-    nextFlag();
+    setFlippedArray([true, true, true, true, true, true])
+    // nextFlag();
+  };
+
+  const revealTile = () => {
+    const [tile] = randomOrder;
+    setRandomOrder(randomOrder.length > 1 ? randomOrder.slice(1) : shuffle([0,1,2,3,4,5]));
+    const newFlipped = flippedArray.slice();
+    newFlipped[tile] = true;
+    setFlippedArray(newFlipped);
   };
 
   const onIncorrect = () => {
     if (attempts < props.attempts) {
       setAttempts(attempts + 1);
+      revealTile();
       // TODO reveal tile
       return;
     }
@@ -124,9 +136,9 @@ function App(props) {
       <CentreWrapper>
         <Title>NATION<span>LE</span></Title>
         <Grid>
-          {[0,1,2,3,4,5].map(n => 
+          {flippedArray.map((flipped, n) => 
           (
-            <Tile key={n} rotate={attempts >= n+1}>
+            <Tile key={n} rotate={flipped}>
               <TileFront></TileFront>
               <TileBack><FlagImage
                 flag={`https://flagcdn.com/w320/${flagKey}.png`}

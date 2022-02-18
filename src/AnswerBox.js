@@ -9,9 +9,11 @@ const Form = styled.form`
 
 const Placeholder = styled.span`
   font-family: Courier, monospace;
-  padding: 0 0 0.2em 0.2em;
+  padding: 0 0.1em 0.1em 0.2em;
   font-size: 2rem;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.1rem; 
+  border: 1px solid #000;
+  border-radius: 3px;
 `;
 
 const HiddenInput = styled.input`
