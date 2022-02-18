@@ -114,7 +114,7 @@ function App(props) {
         <Grid>
           {[0,1,2,3,4,5].map(n => 
           (
-            <Tile rotate={attempts >= n}>
+            <Tile rotate={attempts >= n+1}>
               <TileFront></TileFront>
               <TileBack><FlagImage
                 flag={usFlag}
