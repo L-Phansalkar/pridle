@@ -41,11 +41,12 @@ const TileBack = styled.div`
   width:100%;
   height:100%;
   justify-content: center;
-  background: #000000;
+  background: #ffffff;
   backface-visibility: hidden;
   position: absolute;
   transform: rotateY(180deg);
   top:0;
+  overflow: hidden;
 `;
 
 const Tile = styled.div`
@@ -56,6 +57,14 @@ const Tile = styled.div`
   padding: 2rem;
   position: relative;
   transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
+`;
+
+const FlagImage = styled.img`
+  content: url(${props => props.flag});
+  position: relative;
+  width: 192px;
+  left: ${props => props.left};
+  top: ${props => props.top};
 `;
 
 const Results = styled(({ score, attempts, ...props }) => (
@@ -105,27 +114,54 @@ function App(props) {
         <Grid>
           <Tile rotate={attempts >= 1}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage 
+              flag={usFlag}
+              left={"0px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
           <Tile rotate={attempts >= 2}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage
+              flag={usFlag}
+              left={"-64px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
           <Tile rotate={attempts >= 3}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage
+              flag={usFlag}
+              left={"-128px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
           <Tile rotate={attempts >= 4}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage
+              flag={usFlag}
+              left={"0px"}
+              top={"-64px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
           <Tile rotate={attempts >= 5}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage
+              flag={usFlag}
+              left={"-64px"}
+              top={"-64px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
           <Tile rotate={attempts >= 6}>
             <TileFront></TileFront>
-            <TileBack></TileBack>
+            <TileBack><FlagImage
+              flag={usFlag}
+              left={"-128px"}
+              top={"-64px"}
+            >
+              </FlagImage></TileBack>
           </Tile>
         </Grid>
       <AnswerBox
