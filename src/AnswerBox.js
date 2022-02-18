@@ -55,7 +55,7 @@ export default ({ answers, onCorrect, onIncorrect, ...props }) => {
         return;
   };
 
-  const placeholder = useMemo(() => value === "" ? "GUESS THE COUNTRY" : value, [
+  const placeholder = useMemo(() => value === "" ? "GUESS THE FLAG" : value, [
     value
   ]);
 

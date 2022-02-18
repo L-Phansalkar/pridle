@@ -134,7 +134,7 @@ function App(props) {
   return (
     <div className='App'>
       <CentreWrapper>
-        <Title>NATION<span>LE</span></Title>
+        <Title>FLAG<span>LE</span></Title>
         <Grid>
           {flippedArray.map((flipped, n) => 
           (
