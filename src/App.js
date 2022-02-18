@@ -80,7 +80,7 @@ const Results = styled(({ score, attempts, ...props }) => (
 
 const Title = styled.div`
   display: block;
-  font-size: 5em;
+  font-size: 4rem;
   font-family: monospace, monospace;
   margin-bottom: 1rem;
   span {
