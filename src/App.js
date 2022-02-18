@@ -112,57 +112,18 @@ function App(props) {
     <div className='App'>
       <CentreWrapper>
         <Grid>
-          <Tile rotate={attempts >= 1}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage 
-              flag={usFlag}
-              left={"0px"}
-            >
+          {[0,1,2,3,4,5].map(n => 
+          (
+            <Tile rotate={attempts >= n}>
+              <TileFront></TileFront>
+              <TileBack><FlagImage
+                flag={usFlag}
+                left={`-${(n%3)*64}px`}
+                top={`-${Math.floor(n/3)*64}px`}
+              >
               </FlagImage></TileBack>
-          </Tile>
-          <Tile rotate={attempts >= 2}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage
-              flag={usFlag}
-              left={"-64px"}
-            >
-              </FlagImage></TileBack>
-          </Tile>
-          <Tile rotate={attempts >= 3}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage
-              flag={usFlag}
-              left={"-128px"}
-            >
-              </FlagImage></TileBack>
-          </Tile>
-          <Tile rotate={attempts >= 4}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage
-              flag={usFlag}
-              left={"0px"}
-              top={"-64px"}
-            >
-              </FlagImage></TileBack>
-          </Tile>
-          <Tile rotate={attempts >= 5}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage
-              flag={usFlag}
-              left={"-64px"}
-              top={"-64px"}
-            >
-              </FlagImage></TileBack>
-          </Tile>
-          <Tile rotate={attempts >= 6}>
-            <TileFront></TileFront>
-            <TileBack><FlagImage
-              flag={usFlag}
-              left={"-128px"}
-              top={"-64px"}
-            >
-              </FlagImage></TileBack>
-          </Tile>
+            </Tile>
+          ))}
         </Grid>
       <AnswerBox
         answer={name}
