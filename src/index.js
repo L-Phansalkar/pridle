@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import flags from './flags';
+import flagCodes from './flag_codes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App flags={flags} attempts={9}/>
+    <App flagCodes={flagCodes} attempts={9}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

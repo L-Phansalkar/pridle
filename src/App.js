@@ -1,9 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
-import usFlag from './flags-normal/us.png'
 
 const CentreWrapper = styled.div`
   margin: 0;
@@ -82,17 +80,18 @@ const Results = styled(({ score, attempts, ...props }) => (
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
 function App(props) {
-  const [flags, setFlags] = useState(() => shuffle(props.flags));
+  const [flagKeys, setFlagKeys] = useState(() => shuffle(Object.keys(props.flagCodes)));
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
 
   const nextFlag = () => {
-    setFlags(flags.length > 1 ? flags.slice(1) : shuffle(props.flags));
+    setFlagKeys(flagKeys.length > 1 ? flagKeys.slice(1) : shuffle(Object.keys(props.flagCodes)));
   };
 
   const onCorrect = () => {
     setScore(attempts);
     // TODO end game and show score
+    nextFlag();
   };
 
   const onIncorrect = () => {
@@ -105,8 +104,9 @@ function App(props) {
     setScore(10);
   };
 
-  const [{ emoji, name }] = flags;
-  console.log(name)
+  const [flagKey] = flagKeys;
+  const name = props.flagCodes[flagKey];
+  console.log(name);
 
   return (
     <div className='App'>
@@ -117,7 +117,7 @@ function App(props) {
             <Tile rotate={attempts >= n+1}>
               <TileFront></TileFront>
               <TileBack><FlagImage
-                flag={usFlag}
+                flag={`https://flagcdn.com/w320/${flagKey}.png`}
                 left={`-${(n%3)*64}px`}
                 top={`-${Math.floor(n/3)*64}px`}
               >
