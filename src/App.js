@@ -128,8 +128,8 @@ function App(props) {
   };
 
   const [flagKey] = flagKeys;
-  const name = props.flagCodes[flagKey];
-  console.log(name);
+  const countries = props.flagCodes[flagKey];
+  console.log(countries);
 
   return (
     <div className='App'>
@@ -150,7 +150,7 @@ function App(props) {
           ))}
         </Grid>
       <AnswerBox
-        answer={name}
+        answers={countries}
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
       />

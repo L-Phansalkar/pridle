@@ -30,21 +30,29 @@ const HiddenInput = styled.input`
   }
 `;
 
-export default ({ answer, onCorrect, onIncorrect, ...props }) => {
+export default ({ answers, onCorrect, onIncorrect, ...props }) => {
   const [value, setValue] = useState("");
 
-  useEffect(() => setValue(""), [answer]);
+  useEffect(() => setValue(""), [answers]);
 
   const handleChange = event => {
     setValue(normalise(event.target.value));
   };
 
+  answers = Array.isArray(answers) ? answers : [answers]
   const handleSubmit = event => {
     event.preventDefault();
 
-    value === normalise(answer) ? onCorrect() : onIncorrect();
-    setValue("");
-    return;
+    for (const answer of answers) {
+      if (value !== normalise(answer)) {
+        onIncorrect();
+      } else {
+        onCorrect();
+        break;
+      }
+    } 
+        setValue("");
+        return;
   };
 
   const placeholder = useMemo(() => value === "" ? "GUESS THE COUNTRY" : value, [
