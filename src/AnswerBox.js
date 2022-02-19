@@ -1,74 +1,56 @@
 import React, { useState, useEffect, useMemo } from "react";
+import Select from 'react-select';
 import styled from "styled-components";
 
 const normalise = value => value.toUpperCase();
-
-const Form = styled.form`
-  margin-bottom: 1em;
-`;
-
-const Placeholder = styled.span`
+const StyledSelect = styled(Select)`
   font-family: Courier, monospace;
-  padding: 0 0.1em 0.1em 0.2em;
-  font-size: 2rem;
-  letter-spacing: 0.1rem; 
-  border: 1px solid #000;
-  border-radius: 3px;
-`;
-
-const HiddenInput = styled.input`
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  caret-color: transparent;
-  &:focus + ${Placeholder} {
-    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  margin-bottom: 0.5rem;
+  :hover{
+    border-color: #123456;
   }
 `;
 
-export default ({ answers, onCorrect, onIncorrect, disabled, ...props }) => {
-  const [value, setValue] = useState("");
+export default ({ answers, onCorrect, onIncorrect, disabled, countries, ...props }) => {
+  const [filteredData, setFilteredData] = useState(countries.map(country => Array.isArray(country) ? country[0] : country));
 
-  useEffect(() => setValue(""), [answers]);
-
-  const handleChange = event => {
-    setValue(normalise(event.target.value));
-  };
-
-  answers = Array.isArray(answers) ? answers : [answers]
-  const handleSubmit = event => {
-    event.preventDefault();
-
+  const handleSubmit = guess => {
+    answers = Array.isArray(answers) ? answers : [answers]
     for (const answer of answers) {
-      if (value !== normalise(answer)) {
+      if (normalise(guess.value) !== normalise(answer)) {
         onIncorrect();
       } else {
         onCorrect();
         break;
       }
     } 
-        setValue("");
-        return;
+    return;
   };
 
-  const placeholder = useMemo(() => value === "" ? "GUESS THE FLAG" : value, [
-    value
-  ]);
-
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      height: 52,
+        border: '1px solid #23b21a',
+        boxShadow: '0px 0px 3px #23b21a',
+      '&:hover': {
+        border: '1px solid #23b21a',
+        boxShadow: '0px 0px 3px #23b21a',
+      },
+      '&:focus': {
+        border: '1px solid #23b21a',
+        boxShadow: '0px 0px 3px #23b21a',
+      },
+    }),
+  };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <HiddenInput
-        onChange={handleChange}
-        value={value}
-        autoFocus
-        disabled={disabled}
-      />
-      <Placeholder>{placeholder}</Placeholder>
-    </Form>
+    <StyledSelect
+      options={filteredData.map(val => ({label: val, value: val }))} 
+      onChange={handleSubmit}
+      placeholder="Guess the flag!"
+      autoFocus
+      styles={customStyles}
+    />
   );
 };

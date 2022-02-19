@@ -168,6 +168,7 @@ function App(props) {
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
         disabled={end}
+        countries={Object.values(props.flagCodes)}
       />
       <Results score={score} attempts={attempts} max={props.attempts}/>
       </CentreWrapper>
