@@ -30,7 +30,7 @@ const HiddenInput = styled.input`
   }
 `;
 
-export default ({ answers, onCorrect, onIncorrect, ...props }) => {
+export default ({ answers, onCorrect, onIncorrect, disabled, ...props }) => {
   const [value, setValue] = useState("");
 
   useEffect(() => setValue(""), [answers]);
@@ -66,6 +66,7 @@ export default ({ answers, onCorrect, onIncorrect, ...props }) => {
         onChange={handleChange}
         value={value}
         autoFocus
+        disabled={disabled}
       />
       <Placeholder>{placeholder}</Placeholder>
     </Form>

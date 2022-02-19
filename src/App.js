@@ -132,7 +132,7 @@ function App(props) {
     if (attempts < props.attempts - 1) {
       setAttempts(attempts + 1);
       revealTile();
-      // TODO reveal tile
+      setScore(attempts)
       return;
     }
     setAttempts(attempts + 1);
@@ -167,6 +167,7 @@ function App(props) {
         answers={countries}
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
+        disabled={end}
       />
       <Results score={score} attempts={attempts} max={props.attempts}/>
       </CentreWrapper>
