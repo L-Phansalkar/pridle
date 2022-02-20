@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import flagCodes from './flag_codes';
+import countryData from './countries';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App flagCodes={flagCodes} attempts={9}/>
+    <App countryData={countryData} attempts={6}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
