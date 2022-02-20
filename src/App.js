@@ -5,6 +5,8 @@ import AnswerBox from './AnswerBox';
 
 const CentreWrapper = styled.div`
   margin: 0;
+  position: absolute;
+  overflow: hidden;
   padding: 0;
   width: 100%;
   height: 100%;
@@ -190,12 +192,6 @@ function App(props) {
             </Tile>
           ))}
         </Grid>
-        <GuessGrid>
-        {[0,1,2,3,4,5].map(n => 
-          (
-            <Guess></Guess>
-          ))}
-        </GuessGrid>
       <AnswerBox
         answers={flagName}
         onCorrect={onCorrect}
@@ -203,6 +199,12 @@ function App(props) {
         disabled={end}
         countries={Object.keys(props.countryData)}
       />
+        <GuessGrid>
+        {[0,1,2,3,4,5].map(n => 
+          (
+            <Guess></Guess>
+          ))}
+        </GuessGrid>
       <Results score={score} attempts={attempts} max={props.attempts}/>
       </CentreWrapper>
     </div>
