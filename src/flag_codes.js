@@ -1,4 +1,4 @@
-export default {
+const oldFlagCodes = {
     "ad": "Andorra",
     "ae": "United Arab Emirates",
     "af": "Afghanistan",

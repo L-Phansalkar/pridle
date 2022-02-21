@@ -1,8 +1,8 @@
 import './App.css';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
-import { getDistance, getCompassDirection, getRhumbLineBearing } from "geolib";
+import { getDistance, getCompassDirection } from "geolib";
 import { formatDistance, getDirectionEmoji } from './geography';
 
 const CentreWrapper = styled.div`

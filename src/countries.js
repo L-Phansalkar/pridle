@@ -1,4 +1,4 @@
-export default {
+const countryData = {
     "Andorra": {
         "code": "ad",
         "latitude": 42.546245,
@@ -1215,3 +1215,5 @@ export default {
         "longitude": 29.154857
     }
 }
+
+export default countryData;

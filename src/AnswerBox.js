@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import Select, { defaultTheme } from 'react-select';
 import styled from "styled-components";
 
