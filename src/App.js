@@ -1,9 +1,11 @@
 import './App.css';
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
 import { getDistance, getCompassDirection } from "geolib";
 import { formatDistance, getDirectionEmoji } from './geography';
+import seedrandom from 'seedrandom';
+import { DateTime } from "luxon";
 
 const DELAY_TIME = 0.5;
 
@@ -145,17 +147,26 @@ const ResultsBox = styled.div`
 
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
+const getDayString = () => {
+  const date = DateTime.now().toFormat("yyyy-MM-dd");
+  return `${date}-${DateTime.now().weekday}`;
+};
+
 function App(props) {
-  const [flagNames, setFlagNames] = useState(() => shuffle(Object.keys(props.countryData)));
+  const [countryNames, setFlagNames] = useState(() => props.DEBUG ? shuffle(Object.keys(props.countryData)) : Object.keys(props.countryData));
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false]);
   const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]));
   const [end, setEnd] = useState(false);
   const [guesses, setGuesses] = useState([]);
+  const dayString = useMemo(getDayString, []);
+  const trueCountry = useMemo(() => {
+    return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
+  }, [dayString, countryNames]);
 
   const nextFlag = () => {
-    setFlagNames(flagNames.length > 1 ? flagNames.slice(1) : shuffle(Object.keys(props.countryData)));
+    setFlagNames(countryNames.length > 1 ? countryNames.slice(1) : shuffle(Object.keys(props.countryData)));
   };
 
   const onCorrect = () => {
@@ -190,28 +201,27 @@ function App(props) {
 
   const onGuess = guess => {
     const {code:guessCode, ...guessGeo} = props.countryData[guess];
-    const {code:answerCode, ...answerGeo} = props.countryData[answer];
+    const {code:answerCode, ...answerGeo} = props.countryData[trueCountry];
     setGuesses(guesses => [...guesses, {name: guess, distance: getDistance(guessGeo, answerGeo),
                                         direction: getCompassDirection(guessGeo, answerGeo)}]);
   };
 
   const displayResults = () => {
-    if (score == "DNF") {
+    if (score === "DNF") {
       return <p>Better luck next time!</p>
     }
     return <p>Score: <span>{score}</span></p>
   }
 
-  const [answer] = flagNames;
-  const countryInfo = props.countryData[answer];
+  const countryInfo = props.countryData[trueCountry];
 
   return (
     <div className='App'>
       <CentreWrapper>
         <EndScreen end={end}>
         <ResultsBox end={end}>
-            <p>{score == "DNF" ? "🤔" : "🎉🎉🎉"} </p>
-            <p>{answer}</p>
+            <p>{score === "DNF" ? "🤔" : "🎉🎉🎉"} </p>
+            <p>{trueCountry}</p>
             {displayResults()}
         </ResultsBox>
         </EndScreen>
@@ -231,7 +241,7 @@ function App(props) {
           ))}
         </Grid>
       <AnswerBox
-        answer={answer}
+        answer={trueCountry}
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
         disabled={end}

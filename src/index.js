@@ -7,7 +7,7 @@ import countryData from './countries';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App countryData={countryData} attempts={6}/>
+    <App countryData={countryData} attempts={6} DEBUG={false}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
