@@ -83,6 +83,7 @@ const Title = styled.div`
   display: block;
   font-size: 4rem;
   margin-bottom: 1rem;
+  margin-top: 0.5rem;
   span {
     color: #23b21a;
   }
