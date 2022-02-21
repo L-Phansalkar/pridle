@@ -127,6 +127,9 @@ const ResultsBox = styled.div`
   background: rgba(221,221,221,0.8);
   visibility: ${props => props.end ? "visible" : "hidden"};
   width: 100%;
+  span {
+    font-weight: bold;
+  }
 `;
 
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
@@ -181,6 +184,13 @@ function App(props) {
                                         direction: getCompassDirection(guessGeo, answerGeo)}]);
   };
 
+  const displayResults = () => {
+    if (score == "DNF") {
+      return <p>Better luck next time!</p>
+    }
+    return <p>Score: <span>{score}</span></p>
+  }
+
   const [answer] = flagNames;
   const countryInfo = props.countryData[answer];
 
@@ -191,7 +201,7 @@ function App(props) {
         <ResultsBox end={end}>
             <p>{score == "DNF" ? "🤔" : "🎉🎉🎉"} </p>
             <p>{answer}</p>
-            <p>{score == "DNF" ? "Better luck next time!" : `Score: ${score}`} </p>
+            {displayResults()}
         </ResultsBox>
         </EndScreen>
         <Title>FLAG<span>LE</span></Title>
@@ -221,7 +231,7 @@ function App(props) {
         <GuessGrid>
         {guesses.map((guess, index) => 
           (
-            <Guess>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
+            <Guess key={index}>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
           ))}
         </GuessGrid>
       </CentreWrapper>
