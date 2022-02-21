@@ -5,6 +5,8 @@ import AnswerBox from './AnswerBox';
 import { getDistance, getCompassDirection } from "geolib";
 import { formatDistance, getDirectionEmoji } from './geography';
 
+const DELAY_TIME = 0.5;
+
 const CentreWrapper = styled.div`
   margin: 0;
   position: absolute;
@@ -20,6 +22,7 @@ const CentreWrapper = styled.div`
 
 const Grid = styled.div`
   transition: 1s;
+  transition-delay: ${DELAY_TIME}s;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
@@ -39,6 +42,8 @@ const TileFront = styled.div`
 `;
 
 const TileBack = styled.div`
+  transition: 1s;
+  transition-delay: ${DELAY_TIME}s;
   width:100%;
   height:100%;
   justify-content: center;
@@ -104,6 +109,7 @@ const EndScreen = styled.div`
   align-items: center;
   flex-direction: column;
   transition: 1s;
+  transition-delay: ${DELAY_TIME}s;
   z-index:${props => props.end ? 2 : -1};
   background: rgba(221,221,221,${props => props.end ? 0.8 : 0});
   font-size: 1.5em;
@@ -127,6 +133,8 @@ const GuessGrid = styled.div`
 `;
 
 const ResultsBox = styled.div`
+  transition: 1s;
+  transition-delay: ${DELAY_TIME}s;
   background: rgba(221,221,221,0.8);
   visibility: ${props => props.end ? "visible" : "hidden"};
   width: 100%;

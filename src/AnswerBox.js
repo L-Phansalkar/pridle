@@ -43,6 +43,7 @@ const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGues
       placeholder="Guess the flag!"
       autoFocus
       styles={customStyles}
+      isOptionDisabled={() => disabled}
     />
   );
 };
