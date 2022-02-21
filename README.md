@@ -1,5 +1,7 @@
 # Flagle
-A flag guessing game inspired by Wordle, [Fun with Flags](https://github.com/eddmann/fun-with-flags/) and [Worldle](https://github.com/teuteuf/worldle)
+A flag guessing game inspired by Wordle, [Fun with Flags](https://github.com/eddmann/fun-with-flags/) and [Worldle](https://github.com/teuteuf/worldle)!
+
+Feel free to give me feature suggestions!
 
 Play it here: www.flagle.io
 
