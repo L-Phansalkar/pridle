@@ -34,11 +34,6 @@ export default {
         "latitude": 40.069099,
         "longitude": 45.038189
     },
-    "Netherlands Antilles": {
-        "code": "an",
-        "latitude": 12.226079,
-        "longitude": -69.060087
-    },
     "Angola": {
         "code": "ao",
         "latitude": -11.202692,
