@@ -454,11 +454,6 @@ export default {
         "latitude": 4.860416,
         "longitude": -58.93018
     },
-    "Gaza Strip": {
-        "code": "gz",
-        "latitude": 31.354676,
-        "longitude": 34.308825
-    },
     "Hong Kong": {
         "code": "hk",
         "latitude": 22.396428,

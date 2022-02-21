@@ -16,7 +16,6 @@ const CentreWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  font-family: sans-serif;
 `;
 
 const Grid = styled.div`
@@ -74,7 +73,6 @@ const Results = styled(({ score, attempts, max, ...props }) => (
 ))`
   display: block;
   font-size: 1.5em;
-  font-family: Courier, monospace;
   margin-bottom: 1rem;
   span {
     font-weight: bold;
@@ -84,7 +82,6 @@ const Results = styled(({ score, attempts, max, ...props }) => (
 const Title = styled.div`
   display: block;
   font-size: 4rem;
-  font-family: Courier, monospace;
   margin-bottom: 1rem;
   span {
     color: #23b21a;
@@ -102,22 +99,19 @@ const EndScreen = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: sans-serif;
   transition: 1s;
-  opacity:${props => props.end ? 0.8 : 0};
   z-index:${props => props.end ? 2 : -1};
-  background-color: #dddddd;
-  font-family: Courier, monospace;
+  background: rgba(221,221,221,${props => props.end ? 0.8 : 0});
   font-size: 1.5em;
 `;
 
 const Guess = styled.div`
   display:flex; 
-  justify-content: center;
+  justify-content: end;
   padding: 0.5rem 2rem;
   position: relative;
   background-color: #dddddd;
-  font-family: Courier, monospace;
+  border-radius: 3px;
 `;
 
 const GuessGrid = styled.div`
@@ -129,8 +123,9 @@ const GuessGrid = styled.div`
 `;
 
 const ResultsBox = styled.div`
-  padding: 2rem 2rem;
-  background-color: #dddddd;
+  background: rgba(221,221,221,0.8);
+  visibility: ${props => props.end ? "visible" : "hidden"};
+  width: 100%;
 `;
 
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
@@ -149,7 +144,7 @@ function App(props) {
   };
 
   const onCorrect = () => {
-    setScore(attempts);
+    setScore(attempts + 1);
     // TODO end game and show score
     setAttempts(0);
     setFlippedArray([true, true, true, true, true, true]);
@@ -192,9 +187,10 @@ function App(props) {
     <div className='App'>
       <CentreWrapper>
         <EndScreen end={end}>
-        <ResultsBox>
+        <ResultsBox end={end}>
+            <p>{score == "DNF" ? "🤔" : "🎉🎉🎉"} </p>
             <p>{answer}</p>
-            <p>Score: {score}</p>
+            <p>{score == "DNF" ? "Better luck next time!" : `Score: ${score}`} </p>
         </ResultsBox>
         </EndScreen>
         <Title>FLAG<span>LE</span></Title>
