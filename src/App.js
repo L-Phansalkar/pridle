@@ -19,7 +19,7 @@ const CentreWrapper = styled.div`
 `;
 
 const Grid = styled.div`
-  transition: 1s ease;
+  transition: 1s;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;

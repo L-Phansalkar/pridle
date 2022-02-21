@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Select from 'react-select';
+import Select, { defaultTheme } from 'react-select';
 import styled from "styled-components";
 
 const normalise = value => value.toUpperCase();
@@ -11,7 +11,7 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-export default ({ answer, onCorrect, onIncorrect, disabled, countries, onGuess, ...props }) => {
+const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGuess, ...props }) => {
   const [filteredData, setFilteredData] = useState(countries);
 
   const handleSubmit = guess => {
@@ -46,3 +46,5 @@ export default ({ answer, onCorrect, onIncorrect, disabled, countries, onGuess, 
     />
   );
 };
+
+export default AnswerBox;
