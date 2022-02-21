@@ -2,6 +2,8 @@ import './App.css';
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
+import { getDistance, getCompassDirection } from "geolib";
+import { formatDistance, getDirectionEmoji } from './geography';
 
 const CentreWrapper = styled.div`
   margin: 0;
@@ -11,7 +13,7 @@ const CentreWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   font-family: sans-serif;
@@ -73,6 +75,7 @@ const Results = styled(({ score, attempts, max, ...props }) => (
   display: block;
   font-size: 1.5em;
   font-family: Courier, monospace;
+  margin-bottom: 1rem;
   span {
     font-weight: bold;
   }
@@ -111,9 +114,10 @@ const EndScreen = styled.div`
 const Guess = styled.div`
   display:flex; 
   justify-content: center;
-  padding: 1rem 7rem;
+  padding: 0.5rem 2rem;
   position: relative;
   background-color: #dddddd;
+  font-family: Courier, monospace;
 `;
 
 const GuessGrid = styled.div`
@@ -124,15 +128,21 @@ const GuessGrid = styled.div`
   margin-bottom: 1rem;
 `;
 
+const ResultsBox = styled.div`
+  padding: 2rem 2rem;
+  background-color: #dddddd;
+`;
+
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
 function App(props) {
   const [flagNames, setFlagNames] = useState(() => shuffle(Object.keys(props.countryData)));
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
-  const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false])
-  const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]))
+  const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false]);
+  const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]));
   const [end, setEnd] = useState(false);
+  const [guesses, setGuesses] = useState([]);
 
   const nextFlag = () => {
     setFlagNames(flagNames.length > 1 ? flagNames.slice(1) : shuffle(Object.keys(props.countryData)));
@@ -168,15 +178,25 @@ function App(props) {
     setScore("DNF");
   };
 
-  const [flagName] = flagNames;
-  const countryInfo = props.countryData[flagName];
-  console.log(countryInfo);
+  const onGuess = guess => {
+    const {code:guessCode, ...guessGeo} = props.countryData[guess];
+    const {code:answerCode, ...answerGeo} = props.countryData[answer];
+    setGuesses(guesses => [...guesses, {name: guess, distance: getDistance(guessGeo, answerGeo),
+                                        direction: getCompassDirection(guessGeo, answerGeo)}]);
+  };
+
+  const [answer] = flagNames;
+  const countryInfo = props.countryData[answer];
 
   return (
     <div className='App'>
       <CentreWrapper>
-        <EndScreen end={end}>{flagName}
-        <p>Score: {score}</p></EndScreen>
+        <EndScreen end={end}>
+        <ResultsBox>
+            <p>{answer}</p>
+            <p>Score: {score}</p>
+        </ResultsBox>
+        </EndScreen>
         <Title>FLAG<span>LE</span></Title>
         <Grid>
           {flippedArray.map((flipped, n) => 
@@ -193,19 +213,20 @@ function App(props) {
           ))}
         </Grid>
       <AnswerBox
-        answers={flagName}
+        answer={answer}
         onCorrect={onCorrect}
         onIncorrect={onIncorrect}
         disabled={end}
         countries={Object.keys(props.countryData)}
+        onGuess={onGuess}
       />
+      <Results score={score} attempts={attempts} max={props.attempts}/>
         <GuessGrid>
-        {[0,1,2,3,4,5].map(n => 
+        {guesses.map((guess, index) => 
           (
-            <Guess></Guess>
+            <Guess>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
           ))}
         </GuessGrid>
-      <Results score={score} attempts={attempts} max={props.attempts}/>
       </CentreWrapper>
     </div>
   );

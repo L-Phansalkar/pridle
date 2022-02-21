@@ -5,26 +5,18 @@ import styled from "styled-components";
 const normalise = value => value.toUpperCase();
 const StyledSelect = styled(Select)`
   font-family: Courier, monospace;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   :hover{
     border-color: #123456;
   }
 `;
 
-export default ({ answers, onCorrect, onIncorrect, disabled, countries, ...props }) => {
-  const [filteredData, setFilteredData] = useState(countries.map(country => Array.isArray(country) ? country[0] : country));
+export default ({ answer, onCorrect, onIncorrect, disabled, countries, onGuess, ...props }) => {
+  const [filteredData, setFilteredData] = useState(countries);
 
   const handleSubmit = guess => {
-    answers = Array.isArray(answers) ? answers : [answers]
-    for (const answer of answers) {
-      if (normalise(guess.value) !== normalise(answer)) {
-        onIncorrect();
-      } else {
-        onCorrect();
-        break;
-      }
-    } 
-    return;
+      normalise(guess.value) === normalise(answer) ? onCorrect() : onIncorrect();
+      onGuess(guess.value);
   };
 
   const customStyles = {
