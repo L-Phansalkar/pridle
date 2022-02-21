@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
-import { getDistance, getCompassDirection } from "geolib";
+import { getDistance, getCompassDirection, getRhumbLineBearing } from "geolib";
 import { formatDistance, getDirectionEmoji } from './geography';
 
 const CentreWrapper = styled.div`
@@ -19,11 +19,13 @@ const CentreWrapper = styled.div`
 `;
 
 const Grid = styled.div`
+  transition: 1s ease;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
-  grid-gap: 2px;
   margin-bottom: 1rem;
+  grid-gap: ${props => props.end ? "0px" : "2px"};
+  z-index: ${props => props.end ? 2 : 1};
 `;
 
 const TileFront = styled.div`
@@ -46,6 +48,7 @@ const TileBack = styled.div`
   transform: rotateY(180deg);
   top:0;
   overflow: hidden;
+  background: ${props => props.end ? "rgb(228,228,228)" : "white"};
 `;
 
 const Tile = styled.div`
@@ -205,12 +208,12 @@ function App(props) {
         </ResultsBox>
         </EndScreen>
         <Title>FLAG<span>LE</span></Title>
-        <Grid>
+        <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
             <Tile key={n} rotate={flipped}>
               <TileFront></TileFront>
-              <TileBack><FlagImage
+              <TileBack end={end}><FlagImage
                 flag={`https://flagcdn.com/w320/${countryInfo.code}.png`}
                 left={`-${(n%3)*64}px`}
                 top={`-${Math.floor(n/3)*64}px`}
