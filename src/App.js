@@ -7,7 +7,10 @@ import { formatDistance, getDirectionEmoji } from './geography';
 import seedrandom from 'seedrandom';
 import { DateTime } from "luxon";
 import { useGuesses } from './hooks/useGuesses';
-import { StyleSheetContext } from 'styled-components';
+import { Share } from "./Share";
+import { ToastContainer, Flip } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const DELAY_TIME = 0.5;
 
@@ -178,10 +181,6 @@ function App(props) {
     lastGuess?.distance === 0 ? setScore(guesses.length) : setScore("DNF");
   }, [guesses]);
 
-  const nextFlag = () => {
-    setFlagNames(countryNames.length > 1 ? countryNames.slice(1) : shuffle(Object.keys(props.countryData)));
-  };
-
   const onIncorrect = () => {
     revealTile();
   };
@@ -192,14 +191,17 @@ function App(props) {
     const newFlipped = flippedArray.slice();
     newFlipped[tile] = true;
     setFlippedArray(newFlipped);
+    return tile;
   };
 
   const onGuess = guess => {
+    const tileNum = revealTile();
     const {code:guessCode, ...guessGeo} = props.countryData[guess];
     const {code:answerCode, ...answerGeo} = props.countryData[trueCountry];
     addGuess({name: guess,
               distance: getDistance(guessGeo, answerGeo),
-              direction: getCompassDirection(guessGeo, answerGeo)});
+              direction: getCompassDirection(guessGeo, answerGeo),
+              tile: tileNum});
   };
 
   const displayResults = () => {
@@ -213,12 +215,23 @@ function App(props) {
 
   return (
     <div className='App'>
+      <ToastContainer
+          hideProgressBar
+          position="top-center"
+          transition={Flip}
+          autoClose={2000}
+      />
       <CentreWrapper>
         <EndScreen end={end}>
         <ResultsBox end={end}>
-            <p>{score === "DNF" ? "🤔" : "🎉🎉🎉"} </p>
+            {score === "DNF" ? <p>🤔</p> : <p>🎉🎉🎉</p>}
             <p>{trueCountry}</p>
             {displayResults()}
+            <Share score={score}
+                   guesses={guesses} 
+                   attempts={props.attempts}
+            >
+            </Share>
         </ResultsBox>
         </EndScreen>
         <Title>FLAG<span>LE</span></Title>
