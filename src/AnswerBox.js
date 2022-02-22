@@ -12,8 +12,6 @@ const StyledSelect = styled(Select)`
 `;
 
 const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGuess, ...props }) => {
-  const [filteredData, setFilteredData] = useState(countries);
-
   const handleSubmit = guess => {
       normalise(guess.value) === normalise(answer) ? onCorrect() : onIncorrect();
       onGuess(guess.value);
@@ -38,7 +36,7 @@ const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGues
 
   return (
     <StyledSelect
-      options={filteredData.map(val => ({label: val, value: val }))} 
+      options={countries.map(val => ({label: val, value: val }))} 
       onChange={handleSubmit}
       placeholder="Guess the flag!"
       autoFocus

@@ -1,11 +1,13 @@
 import './App.css';
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import styled from 'styled-components';
 import AnswerBox from './AnswerBox';
 import { getDistance, getCompassDirection } from "geolib";
 import { formatDistance, getDirectionEmoji } from './geography';
 import seedrandom from 'seedrandom';
 import { DateTime } from "luxon";
+import { useGuesses } from './hooks/useGuesses';
+import { StyleSheetContext } from 'styled-components';
 
 const DELAY_TIME = 0.5;
 
@@ -155,27 +157,33 @@ const getDayString = () => {
 function App(props) {
   const [countryNames, setFlagNames] = useState(() => props.DEBUG ? shuffle(Object.keys(props.countryData)) : Object.keys(props.countryData));
   const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
   const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false]);
   const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]));
   const [end, setEnd] = useState(false);
-  const [guesses, setGuesses] = useState([]);
   const dayString = useMemo(getDayString, []);
+  const [guesses, addGuess] = useGuesses(dayString);
   const trueCountry = useMemo(() => {
     return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
   }, [dayString, countryNames]);
+
+  useEffect(() => {
+    if (guesses.length >= props.attempts || guesses[guesses.length - 1]?.distance === 0) {
+      setEnd(true);
+      setFlippedArray([true, true, true, true, true, true]);
+    } 
+  }, [guesses]);
+
+  useEffect(() => {
+    const lastGuess = guesses[guesses.length - 1];
+    lastGuess?.distance === 0 ? setScore(guesses.length) : setScore("DNF");
+  }, [guesses]);
 
   const nextFlag = () => {
     setFlagNames(countryNames.length > 1 ? countryNames.slice(1) : shuffle(Object.keys(props.countryData)));
   };
 
-  const onCorrect = () => {
-    setScore(attempts + 1);
-    // TODO end game and show score
-    setAttempts(0);
-    setFlippedArray([true, true, true, true, true, true]);
-    setEnd(true);
-    // nextFlag();
+  const onIncorrect = () => {
+    revealTile();
   };
 
   const revealTile = () => {
@@ -186,24 +194,12 @@ function App(props) {
     setFlippedArray(newFlipped);
   };
 
-  const onIncorrect = () => {
-    if (attempts < props.attempts - 1) {
-      setAttempts(attempts + 1);
-      revealTile();
-      setScore(attempts)
-      return;
-    }
-    setAttempts(attempts + 1);
-    setEnd(true);
-    revealTile();
-    setScore("DNF");
-  };
-
   const onGuess = guess => {
     const {code:guessCode, ...guessGeo} = props.countryData[guess];
     const {code:answerCode, ...answerGeo} = props.countryData[trueCountry];
-    setGuesses(guesses => [...guesses, {name: guess, distance: getDistance(guessGeo, answerGeo),
-                                        direction: getCompassDirection(guessGeo, answerGeo)}]);
+    addGuess({name: guess,
+              distance: getDistance(guessGeo, answerGeo),
+              direction: getCompassDirection(guessGeo, answerGeo)});
   };
 
   const displayResults = () => {
@@ -242,13 +238,13 @@ function App(props) {
         </Grid>
       <AnswerBox
         answer={trueCountry}
-        onCorrect={onCorrect}
+        onCorrect={() => {}}
         onIncorrect={onIncorrect}
         disabled={end}
         countries={Object.keys(props.countryData)}
         onGuess={onGuess}
       />
-      <Results score={score} attempts={attempts} max={props.attempts}/>
+      <Results score={score} attempts={guesses.length} max={props.attempts}/>
         <GuessGrid>
         {guesses.map((guess, index) => 
           (
