@@ -21,14 +21,14 @@ const ShareButton = styled.button`
   border: none;
   color: white;
   border-radius: 3px;
-  padding: 15px 32px;
+  padding: 15px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   font-family: Courier, monospace;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 
   :hover {

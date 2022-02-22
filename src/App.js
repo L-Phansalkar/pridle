@@ -145,6 +145,9 @@ const ResultsBox = styled.div`
   background: rgba(221,221,221,0.8);
   visibility: ${props => props.end ? "visible" : "hidden"};
   width: 100%;
+  p {
+    margin: 0.5rem 0.5rem;
+  }
   span {
     font-weight: bold;
   }
