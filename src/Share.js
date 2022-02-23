@@ -4,7 +4,10 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from '@mui/material/Button';
 
-const generateShareSquares = (guesses, attempts) => {
+const generateShareSquares = (score, guesses, attempts) => {
+    if (score === "DNF") {
+      return "🟥🟥🟥\n🟥🟥🟥\n"
+    }
     let squares = Array(attempts).fill("🟩");
     for (let i = 0; i < guesses.length - 1; i++) {
         squares[guesses[i].tile] = "🟥";
@@ -40,8 +43,8 @@ const ShareButton = styled.button`
 
 export function Share({ score, guesses, attempts }) {
   const shareText = useMemo(() => {
-    const squareString = generateShareSquares(guesses, attempts);
-    return `#Flagle ${guesses.length}/${attempts}\n${squareString}www.flagle.io`
+    const squareString = generateShareSquares(score, guesses, attempts);
+    return `#Flagle ${score === "DNF" ? "X" : guesses.length}/${attempts}\n${squareString}www.flagle.io`
   }, [guesses, attempts]);
 
   return (

@@ -162,7 +162,7 @@ const ResultsBox = styled.div`
 
 const TitleBarDiv = styled.div`
   display: flex;
-  padding-left: 1.5rem;
+  padding-left: 1rem;
   align-items: center;
 `;
 
