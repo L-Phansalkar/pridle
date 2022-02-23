@@ -14,6 +14,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 'auto',
+  maxWidth: '400px',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -32,7 +33,7 @@ const StatText = styled.div`
 `;
 
 const StatsTile = ({stat, text}) => (
-  <Box sx={{ p: 2, borderRadius: '3px', m: '0rem 0.25rem', justifyContent: 'center'}}>
+  <Box sx={{ p: 1, borderRadius: '3px', m: '0rem 0.25rem', justifyContent: 'center'}}>
     <StatNumber>{stat}</StatNumber>
     <StatText>{text}</StatText>
   </Box>
@@ -84,7 +85,7 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
           </Typography>
           <List>
             {Object.entries(guessDistribution).map(([index, count]) => (
-              <ListItem>
+              <ListItem sx={{paddingBottom: 0}}>
                 <div>{index}</div>
                 <div
                   style={{
