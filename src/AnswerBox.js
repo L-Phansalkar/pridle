@@ -6,6 +6,7 @@ const normalise = value => value.toUpperCase();
 const StyledSelect = styled(Select)`
   font-family: Courier, monospace;
   margin-bottom: 1rem;
+  min-width: 200px;
   :hover{
     border-color: #123456;
   }
@@ -40,7 +41,6 @@ const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGues
       onChange={handleSubmit}
       placeholder="Guess the flag!"
       autoFocus
-      styles={customStyles}
       isOptionDisabled={() => disabled}
     />
   );

@@ -7,9 +7,10 @@ import { formatDistance, getDirectionEmoji } from './geography';
 import seedrandom from 'seedrandom';
 import { DateTime } from "luxon";
 import { useGuesses } from './hooks/useGuesses';
-import { Share } from "./Share";
 import { ToastContainer, Flip } from "react-toastify";
+import { EndModal } from "./EndModal";
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 
 const DELAY_TIME = 0.5;
@@ -60,7 +61,6 @@ const TileBack = styled.div`
   transform: rotateY(180deg);
   top:0;
   overflow: hidden;
-  background: ${props => props.end ? "rgb(228,228,228)" : "white"};
 `;
 
 const Tile = styled.div`
@@ -100,7 +100,7 @@ const Title = styled.div`
   margin-bottom: 1rem;
   margin-top: 0.5rem;
   span {
-    color: #23b21a;
+    color: #1a76d2;
   }
 `;
 
@@ -176,6 +176,7 @@ function App(props) {
     if (guesses.length >= props.attempts || guesses[guesses.length - 1]?.distance === 0) {
       setEnd(true);
       setFlippedArray([true, true, true, true, true, true]);
+      toast(guesses[guesses.length - 1]?.distance === 0 ? `🎉 ${trueCountry} 🎉` : `🤔 ${trueCountry} 🤔`);
     } 
   }, [guesses]);
 
@@ -207,13 +208,6 @@ function App(props) {
               tile: tileNum});
   };
 
-  const displayResults = () => {
-    if (score === "DNF") {
-      return <p>Better luck next time!</p>
-    }
-    return <p>Score: <span>{score}</span></p>
-  }
-
   const countryInfo = props.countryData[trueCountry];
 
   return (
@@ -222,26 +216,14 @@ function App(props) {
           hideProgressBar
           position="top-center"
           transition={Flip}
-          autoClose={2000}
+          autoClose={5000}
       />
       <CentreWrapper>
-        <EndScreen end={end}>
-        <ResultsBox end={end}>
-            {score === "DNF" ? <p>🤔</p> : <p>🎉🎉🎉</p>}
-            <p>{trueCountry}</p>
-            {displayResults()}
-            <Share score={score}
-                   guesses={guesses} 
-                   attempts={props.attempts}
-            >
-            </Share>
-        </ResultsBox>
-        </EndScreen>
         <Title>FLAG<span>LE</span></Title>
         <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
-            <Tile key={n} rotate={flipped}>
+            <Tile key={n} rotate={flipped ? 1 : 0}>
               <TileFront></TileFront>
               <TileBack end={end}><FlagImage
                 flag={`https://flagcdn.com/w320/${countryInfo.code}.png`}
@@ -267,6 +249,12 @@ function App(props) {
             <Guess key={index}>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
           ))}
         </GuessGrid>
+        <EndModal end={end}
+                  score={score} 
+                  guesses={guesses}
+                  maxAttempts={props.attempts}
+        >
+        </EndModal>
       </CentreWrapper>
     </div>
   );

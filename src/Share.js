@@ -2,6 +2,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import React, { useMemo } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import Button from '@mui/material/Button';
 
 const generateShareSquares = (guesses, attempts) => {
     let squares = Array(attempts).fill("🟩");
@@ -36,6 +37,7 @@ const ShareButton = styled.button`
   }
 `;
 
+
 export function Share({ score, guesses, attempts }) {
   const shareText = useMemo(() => {
     const squareString = generateShareSquares(guesses, attempts);
@@ -48,9 +50,7 @@ export function Share({ score, guesses, attempts }) {
       onCopy={() => toast("Copied Results to Clipboard")}
       options={{ format: "text/plain" }}
     >
-      <ShareButton>
-        Share Score
-      </ShareButton>
+      <Button variant="contained"><span>Share Score</span></Button>
     </CopyToClipboard>
   )
 }
