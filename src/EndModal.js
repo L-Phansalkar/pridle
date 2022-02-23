@@ -109,6 +109,7 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
             <Share score={score}
                    guesses={guesses} 
                    attempts={maxAttempts}
+                   end={end}
             >
             </Share>
           </Typography>

@@ -41,7 +41,7 @@ const ShareButton = styled.button`
 `;
 
 
-export function Share({ score, guesses, attempts }) {
+export function Share({ score, guesses, attempts, end}) {
   const shareText = useMemo(() => {
     const squareString = generateShareSquares(score, guesses, attempts);
     return `#Flagle ${score === "DNF" ? "X" : guesses.length}/${attempts}\n${squareString}www.flagle.io`
@@ -53,7 +53,7 @@ export function Share({ score, guesses, attempts }) {
       onCopy={() => toast("Copied Results to Clipboard")}
       options={{ format: "text/plain" }}
     >
-      <Button variant="contained"><span>Share Score</span></Button>
+      <Button variant="contained" disabled={end ? 0 : 1}><span>Share Score</span></Button>
     </CopyToClipboard>
   )
 }

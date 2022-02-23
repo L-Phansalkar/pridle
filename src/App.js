@@ -175,7 +175,7 @@ const getDayString = () => {
 
 function App(props) {
   const [countryNames, setFlagNames] = useState(() => props.DEBUG ? shuffle(Object.keys(props.countryData)) : Object.keys(props.countryData));
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState("DNF");
   const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false]);
   const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]));
   const [end, setEnd] = useState(false);
