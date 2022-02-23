@@ -186,23 +186,26 @@ function App(props) {
   }, [dayString, countryNames]);
 
   useEffect(() => {
+    revealTiles();
+    getRemainingTiles();
     if (guesses.length >= props.attempts || guesses[guesses.length - 1]?.distance === 0) {
       setEnd(true);
       setFlippedArray([true, true, true, true, true, true]);
-      toast(guesses[guesses.length - 1]?.distance === 0 ? `🎉 ${trueCountry} 🎉` : `🤔 ${trueCountry} 🤔`);
+      if (guesses[guesses.length - 1].distance === 0) {
+        toast(`🎉 ${trueCountry} 🎉`);
+        setScore(guesses.lenght);
+      } else {
+        toast(`🤔 ${trueCountry} 🤔`);
+        setScore("DNF");
+      }
     } 
   }, [guesses]);
 
-  useEffect(() => {
-    const lastGuess = guesses[guesses.length - 1];
-    lastGuess?.distance === 0 ? setScore(guesses.length) : setScore("DNF");
-  }, [guesses]);
-
   const onIncorrect = () => {
-    revealTile();
+    revealRandomTile();
   };
 
-  const revealTile = () => {
+  const revealRandomTile = () => {
     const [tile] = randomOrder;
     setRandomOrder(randomOrder.length > 1 ? randomOrder.slice(1) : shuffle([0,1,2,3,4,5]));
     const newFlipped = flippedArray.slice();
@@ -210,9 +213,29 @@ function App(props) {
     setFlippedArray(newFlipped);
     return tile;
   };
+  
+  const getRemainingTiles = () => {
+    const remainingTiles = [];
+    const usedTiles = guesses.map(guess => guess.tile);
+    for (const i of [0,1,2,3,4,5]) {
+        if (!usedTiles.includes(i)) {
+          remainingTiles.push(i);
+        }
+      }
+    setRandomOrder(shuffle(remainingTiles));
+    return remainingTiles;
+  };
+
+  const revealTiles = () => {
+    const newFlipped = flippedArray.slice();
+    for (const guess of guesses) {
+      newFlipped[guess.tile] = true;
+      setFlippedArray(newFlipped);
+    }
+  };
 
   const onGuess = guess => {
-    const tileNum = revealTile();
+    const tileNum = revealRandomTile();
     const {code:guessCode, ...guessGeo} = props.countryData[guess];
     const {code:answerCode, ...answerGeo} = props.countryData[trueCountry];
     addGuess({name: guess,
