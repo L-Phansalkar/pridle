@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Share } from "./Share";
@@ -45,6 +44,12 @@ const Grid = styled.div`
   grid-template-rows: auto 1fr;
 `;
 
+const StatsButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
 export function EndModal({ end, score, guesses, maxAttempts }) {
   const [open, setOpen] = useState(end);
   const handleOpen = () => setOpen(true);
@@ -60,10 +65,11 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
 
   const maxDistribution = Math.max(...Object.values(guessDistribution));
 
-  useEffect(() => setOpen(end), [end]);
+  useEffect(() => setTimeout(() => setOpen(end), 1500), [end]);
+
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}><span>Stats 📈</span></Button>
+      <StatsButton onClick={handleOpen}>📈</StatsButton> 
       <Modal
         open={open}
         onClose={handleClose}

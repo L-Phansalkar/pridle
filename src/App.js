@@ -39,6 +39,13 @@ const Grid = styled.div`
   z-index: ${props => props.end ? 2 : 1};
 `;
 
+const TitleBar = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr;
+  margin-bottom: 1rem;
+`;
+
 const TileFront = styled.div`
   width:100%;
   height:100%;
@@ -153,6 +160,12 @@ const ResultsBox = styled.div`
   }
 `;
 
+const TitleBarDiv = styled.div`
+  display: flex;
+  padding-left: 1.5rem;
+  align-items: center;
+`;
+
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
 
 const getDayString = () => {
@@ -219,7 +232,18 @@ function App(props) {
           autoClose={5000}
       />
       <CentreWrapper>
-        <Title>FLAG<span>LE</span></Title>
+        <TitleBar>
+          <TitleBarDiv></TitleBarDiv>
+          <Title>FLAG<span>LE</span></Title>
+          <TitleBarDiv>
+          <EndModal end={end}
+                    score={score} 
+                    guesses={guesses}
+                    maxAttempts={props.attempts}
+          >
+          </EndModal>
+          </TitleBarDiv>
+        </TitleBar>
         <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
@@ -249,12 +273,6 @@ function App(props) {
             <Guess key={index}>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
           ))}
         </GuessGrid>
-        <EndModal end={end}
-                  score={score} 
-                  guesses={guesses}
-                  maxAttempts={props.attempts}
-        >
-        </EndModal>
       </CentreWrapper>
     </div>
   );
