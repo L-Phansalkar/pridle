@@ -47,7 +47,7 @@ const Grid = styled.div`
 const StatsButton = styled.button`
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
 `;
 export function EndModal({ end, score, guesses, maxAttempts }) {

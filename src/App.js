@@ -104,29 +104,10 @@ const Results = styled(({ score, attempts, max, ...props }) => (
 const Title = styled.div`
   display: block;
   font-size: 4rem;
-  margin-bottom: 1rem;
   margin-top: 0.5rem;
   span {
     color: #1a76d2;
   }
-`;
-
-const EndScreen = styled.div`
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: 1s;
-  transition-delay: ${DELAY_TIME}s;
-  z-index:${props => props.end ? 2 : -1};
-  background: rgba(221,221,221,${props => props.end ? 0.8 : 0});
-  font-size: 1.5em;
 `;
 
 const Guess = styled.div`
@@ -146,23 +127,9 @@ const GuessGrid = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ResultsBox = styled.div`
-  transition: 1s;
-  transition-delay: ${DELAY_TIME}s;
-  background: rgba(221,221,221,0.8);
-  visibility: ${props => props.end ? "visible" : "hidden"};
-  width: 100%;
-  p {
-    margin: 0.5rem 0.5rem;
-  }
-  span {
-    font-weight: bold;
-  }
-`;
 
 const TitleBarDiv = styled.div`
   display: flex;
-  padding-left: 1rem;
   align-items: center;
 `;
 
