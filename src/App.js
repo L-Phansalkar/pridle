@@ -132,7 +132,7 @@ const GuessLine = styled.div`
   display: grid;
   grid-template-columns: repeat(9, 2.5rem);
   /* grid-template-rows: auto 1fr; */
-  max-width: 350px;
+  max-width: 330px;
   margin-bottom: 2px;
 `;
 
