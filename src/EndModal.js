@@ -49,7 +49,9 @@ const StatsButton = styled.button`
   border: none;
   font-size: 2rem;
   cursor: pointer;
+  margin-top: 0.6rem;
 `;
+
 export function EndModal({ end, score, guesses, maxAttempts }) {
   const [open, setOpen] = useState(end);
   const handleOpen = () => setOpen(true);

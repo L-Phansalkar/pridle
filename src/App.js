@@ -110,6 +110,16 @@ const Title = styled.div`
   }
 `;
 
+const Footer = styled.div`
+  display: block;
+  font-size: 1rem;
+  margin-top: auto;
+  margin-bottom: 0.5rem;
+  span {
+    color: #1a76d2;
+  }
+`;
+
 const GuessLine = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(30px, 2.5rem));
@@ -293,6 +303,7 @@ function App(props) {
               <ArrowBox>{getDirectionEmoji(guess)}</ArrowBox>
             </GuessLine>
           ))}
+          <Footer>️❤️ FLAG<span>LE</span>? <a href="https://www.buymeacoffee.com/ryanbarouki">Buy me a ☕👀?</a></Footer>
       </CentreWrapper>
     </div>
   );
