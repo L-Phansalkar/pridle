@@ -110,30 +110,11 @@ const Title = styled.div`
   }
 `;
 
-const Guess = styled.div`
-  display:flex; 
-  justify-content: end;
-  padding: 0.5rem 2rem;
-  position: relative;
-  background-color: #dddddd;
-  border-radius: 3px;
-`;
-
-const GuessGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: auto 1fr;
-  grid-gap: 2px;
-  margin-bottom: 1rem;
-  width:auto;
-`;
-
 const GuessLine = styled.div`
   display: grid;
-  grid-template-columns: repeat(9, 2.5rem);
+  grid-template-columns: repeat(9, minmax(30px, 2.5rem));
   /* grid-template-rows: auto 1fr; */
-  max-width: 330px;
-  margin-bottom: 2px;
+  margin: 0px 2px 2px 2px;
 `;
 
 const CountryGuess = styled.div`
