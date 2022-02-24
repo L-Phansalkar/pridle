@@ -7,6 +7,7 @@ const StyledSelect = styled(Select)`
   font-family: Courier, monospace;
   margin-bottom: 1rem;
   min-width: 200px;
+  color: #000;
   :hover{
     border-color: #123456;
   }
