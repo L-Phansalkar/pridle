@@ -133,6 +133,7 @@ const GuessLine = styled.div`
   grid-template-columns: repeat(9, 2.5rem);
   /* grid-template-rows: auto 1fr; */
   max-width: 350px;
+  margin-bottom: 2px;
 `;
 
 const CountryGuess = styled.div`
@@ -303,7 +304,6 @@ function App(props) {
         onGuess={onGuess}
       />
       <Results score={score} attempts={guesses.length} max={props.attempts}/>
-        <GuessGrid>
         {guesses.map((guess, index) => 
           (
             <GuessLine>
@@ -312,7 +312,6 @@ function App(props) {
               <ArrowBox>{getDirectionEmoji(guess)}</ArrowBox>
             </GuessLine>
           ))}
-        </GuessGrid>
       </CentreWrapper>
     </div>
   );
