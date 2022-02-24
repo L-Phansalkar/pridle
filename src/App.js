@@ -125,8 +125,54 @@ const GuessGrid = styled.div`
   grid-template-rows: auto 1fr;
   grid-gap: 2px;
   margin-bottom: 1rem;
+  width:auto;
 `;
 
+const GuessLine = styled.div`
+  display: grid;
+  grid-template-columns: repeat(9, 2.5rem);
+  /* grid-template-rows: auto 1fr; */
+  max-width: 350px;
+`;
+
+const CountryGuess = styled.div`
+  /* padding: 0.5rem 2rem; */
+  display:flex; 
+  /* padding-top: 0.3rem; */
+  position: relative;
+  background-color: #dddddd;
+  border-radius: 3px;
+  grid-column: 1 / span 6;
+  margin-right: 2px;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DistanceBox = styled.div`
+  display:flex; 
+  /* padding-top: 0.3rem; */
+  position: relative;
+  background-color: #dddddd;
+  border-radius: 3px;
+  grid-column: 7 / span 2;
+  font-weight: bold;
+  margin-right: 2px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ArrowBox = styled.div`
+  display:flex; 
+  /* padding-top: 0.3rem; */
+  padding:0.25rem;
+  position: relative;
+  background-color: #dddddd;
+  border-radius: 3px;
+  grid-column: 9 / span 1;
+  align-items: center;
+  justify-content: center;
+`;
 
 const TitleBarDiv = styled.div`
   display: flex;
@@ -260,7 +306,11 @@ function App(props) {
         <GuessGrid>
         {guesses.map((guess, index) => 
           (
-            <Guess key={index}>{guess.name} | {formatDistance(guess.distance)} | {getDirectionEmoji(guess)}</Guess>
+            <GuessLine>
+              <CountryGuess>{guess.name}</CountryGuess>
+              <DistanceBox>{formatDistance(guess.distance)} </DistanceBox>
+              <ArrowBox>{getDirectionEmoji(guess)}</ArrowBox>
+            </GuessLine>
           ))}
         </GuessGrid>
       </CentreWrapper>
