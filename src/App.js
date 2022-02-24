@@ -25,7 +25,11 @@ const CentreWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column; 
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #121212;
+}
 `;
 
 const Grid = styled.div`
@@ -44,6 +48,9 @@ const TitleBar = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
   margin-bottom: 1rem;
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+  }
 `;
 
 const TileFront = styled.div`
@@ -68,6 +75,9 @@ const TileBack = styled.div`
   transform: rotateY(180deg);
   top:0;
   overflow: hidden;
+  @media (prefers-color-scheme: dark) {
+    background: #121212;
+  }
 `;
 
 const Tile = styled.div`
@@ -99,6 +109,9 @@ const Results = styled(({ score, attempts, max, ...props }) => (
   span {
     font-weight: bold;
   }
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+}
 `;
 
 const Title = styled.div`
@@ -117,6 +130,12 @@ const Footer = styled.div`
   margin-bottom: 0.5rem;
   span {
     color: #1a76d2;
+  }
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+    a {
+      color: #fff
+    }
   }
 `;
 
@@ -139,6 +158,10 @@ const CountryGuess = styled.div`
   text-overflow: ellipsis;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const DistanceBox = styled.div`
@@ -152,6 +175,10 @@ const DistanceBox = styled.div`
   margin-right: 2px;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const ArrowBox = styled.div`
@@ -164,6 +191,10 @@ const ArrowBox = styled.div`
   grid-column: 9 / span 1;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const TitleBarDiv = styled.div`
