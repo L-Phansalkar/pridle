@@ -14,11 +14,13 @@ import { toast } from "react-toastify";
 
 
 const DELAY_TIME = 0.5;
+const FLAG_WIDTH = 192;
+const FLAG_SCALE = FLAG_WIDTH/320;
 
 const CentreWrapper = styled.div`
   margin: 0;
   position: absolute;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 0;
   width: 100%;
   height: 100%;
@@ -85,7 +87,7 @@ const Tile = styled.div`
   transform-style: preserve-3d;
   display:flex; 
   justify-content: center;
-  padding: 2rem;
+  padding: ${props => props.height ? `${props.height/2}px` : "2rem"} 2rem;
   position: relative;
   transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
 `;
@@ -93,7 +95,7 @@ const Tile = styled.div`
 const FlagImage = styled.img`
   content: url(${props => props.flag});
   position: relative;
-  width: 192px;
+  width: ${FLAG_WIDTH}px;
   left: ${props => props.left};
   top: ${props => props.top};
 `;
@@ -280,7 +282,13 @@ function App(props) {
               tile: tileNum});
   };
 
-  const countryInfo = props.countryData[trueCountry];
+  const countryInfo = useMemo(() => props.countryData[trueCountry], [trueCountry]);
+
+  const flagImg = useMemo(() => {
+    const img = new Image();
+    img.src = `https://flagcdn.com/w320/${countryInfo.code}.png`;
+    return img;
+  }, [countryInfo]);
 
   return (
     <div className='App'>
@@ -306,12 +314,12 @@ function App(props) {
         <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
-            <Tile key={n} rotate={flipped ? 1 : 0}>
+            <Tile key={n} rotate={flipped ? 1 : 0} height={FLAG_SCALE*flagImg.height/2}>
               <TileFront></TileFront>
               <TileBack end={end}><FlagImage
-                flag={`https://flagcdn.com/w320/${countryInfo.code}.png`}
+                flag={flagImg.src}
                 left={`-${(n%3)*64}px`}
-                top={`-${Math.floor(n/3)*64}px`}
+                top={`-${Math.floor(n/3)*FLAG_SCALE*flagImg.height/2}px`}
               >
               </FlagImage></TileBack>
             </Tile>
