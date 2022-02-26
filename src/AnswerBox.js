@@ -41,7 +41,6 @@ const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGues
       options={countries.map(val => ({label: val, value: val }))} 
       onChange={handleSubmit}
       placeholder="Guess the flag!"
-      autoFocus
       isOptionDisabled={() => disabled}
     />
   );
