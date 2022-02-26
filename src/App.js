@@ -20,7 +20,7 @@ const FLAG_SCALE = FLAG_WIDTH/320;
 const CentreWrapper = styled.div`
   margin: 0;
   position: absolute;
-  /* overflow: hidden; */
+  overflow: auto;
   padding: 0;
   width: 100%;
   height: 100%;
@@ -144,14 +144,11 @@ const Footer = styled.div`
 const GuessLine = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(30px, 2.5rem));
-  /* grid-template-rows: auto 1fr; */
   margin: 0px 2px 2px 2px;
 `;
 
 const CountryGuess = styled.div`
-  /* padding: 0.5rem 2rem; */
   display:flex; 
-  /* padding-top: 0.3rem; */
   position: relative;
   background-color: #dddddd;
   border-radius: 3px;
@@ -168,7 +165,6 @@ const CountryGuess = styled.div`
 
 const DistanceBox = styled.div`
   display:flex; 
-  /* padding-top: 0.3rem; */
   position: relative;
   background-color: #dddddd;
   border-radius: 3px;
@@ -185,7 +181,6 @@ const DistanceBox = styled.div`
 
 const ArrowBox = styled.div`
   display:flex; 
-  /* padding-top: 0.3rem; */
   padding:0.25rem;
   position: relative;
   background-color: #dddddd;
