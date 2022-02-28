@@ -44,7 +44,7 @@ const ShareButton = styled.button`
 export function Share({ score, guesses, attempts, end}) {
   const shareText = useMemo(() => {
     const squareString = generateShareSquares(score, guesses, attempts);
-    return `#Flagle ${score === "DNF" ? "X" : guesses.length}/${attempts}\n${squareString}www.flagle.io`
+    return `#Flagle ${score === "DNF" ? "X" : guesses.length}/${attempts}\n${squareString}https://www.flagle.io`
   }, [guesses, attempts]);
 
   return (
