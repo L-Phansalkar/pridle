@@ -214,6 +214,7 @@ function App(props) {
   const [end, setEnd] = useState(false);
   const dayString = useMemo(getDayString, []);
   const [guesses, addGuess] = useGuesses(dayString);
+  const [flagLoad, setFlagLoad] = useState(false);
   const trueCountry = useMemo(() => {
     return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
   }, [dayString, countryNames]);
@@ -281,6 +282,7 @@ function App(props) {
 
   const flagImg = useMemo(() => {
     const img = new Image();
+    img.onload = () => setFlagLoad(true);
     img.src = `https://flagcdn.com/w320/${countryInfo.code}.png`;
     return img;
   }, [countryInfo]);
@@ -309,7 +311,7 @@ function App(props) {
         <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
-            <Tile key={n} rotate={flipped ? 1 : 0} height={FLAG_SCALE*flagImg.height/2}>
+            <Tile key={n} rotate={flipped && flagLoad ? 1 : 0} height={FLAG_SCALE*flagImg.height/2}>
               <TileFront></TileFront>
               <TileBack end={end}><FlagImage
                 flag={flagImg.src}
