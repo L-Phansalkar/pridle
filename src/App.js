@@ -257,7 +257,7 @@ function App(props) {
           hideProgressBar
           position="top-center"
           transition={Flip}
-          autoClose={5000}
+          autoClose={false}
       />
       <CentreWrapper>
         <TitleBar>
