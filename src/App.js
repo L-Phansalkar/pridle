@@ -14,18 +14,24 @@ import { toast } from "react-toastify";
 
 
 const DELAY_TIME = 0.5;
+const FLAG_WIDTH = 192;
+const FLAG_SCALE = FLAG_WIDTH/320;
 
 const CentreWrapper = styled.div`
   margin: 0;
   position: absolute;
-  overflow: hidden;
+  overflow: auto;
   padding: 0;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column; 
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #121212;
+}
 `;
 
 const Grid = styled.div`
@@ -44,6 +50,9 @@ const TitleBar = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto 1fr;
   margin-bottom: 1rem;
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+  }
 `;
 
 const TileFront = styled.div`
@@ -68,6 +77,9 @@ const TileBack = styled.div`
   transform: rotateY(180deg);
   top:0;
   overflow: hidden;
+  @media (prefers-color-scheme: dark) {
+    background: #121212;
+  }
 `;
 
 const Tile = styled.div`
@@ -75,7 +87,7 @@ const Tile = styled.div`
   transform-style: preserve-3d;
   display:flex; 
   justify-content: center;
-  padding: 2rem;
+  padding: ${props => props.height ? `${props.height/2}px` : "2rem"} 2rem;
   position: relative;
   transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
 `;
@@ -83,7 +95,7 @@ const Tile = styled.div`
 const FlagImage = styled.img`
   content: url(${props => props.flag});
   position: relative;
-  width: 192px;
+  width: ${FLAG_WIDTH}px;
   left: ${props => props.left};
   top: ${props => props.top};
 `;
@@ -99,6 +111,9 @@ const Results = styled(({ score, attempts, max, ...props }) => (
   span {
     font-weight: bold;
   }
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+}
 `;
 
 const Title = styled.div`
@@ -118,19 +133,22 @@ const Footer = styled.div`
   span {
     color: #1a76d2;
   }
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+    a {
+      color: #fff
+    }
+  }
 `;
 
 const GuessLine = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(30px, 2.5rem));
-  /* grid-template-rows: auto 1fr; */
   margin: 0px 2px 2px 2px;
 `;
 
 const CountryGuess = styled.div`
-  /* padding: 0.5rem 2rem; */
   display:flex; 
-  /* padding-top: 0.3rem; */
   position: relative;
   background-color: #dddddd;
   border-radius: 3px;
@@ -139,11 +157,14 @@ const CountryGuess = styled.div`
   text-overflow: ellipsis;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const DistanceBox = styled.div`
   display:flex; 
-  /* padding-top: 0.3rem; */
   position: relative;
   background-color: #dddddd;
   border-radius: 3px;
@@ -152,11 +173,14 @@ const DistanceBox = styled.div`
   margin-right: 2px;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const ArrowBox = styled.div`
   display:flex; 
-  /* padding-top: 0.3rem; */
   padding:0.25rem;
   position: relative;
   background-color: #dddddd;
@@ -164,6 +188,10 @@ const ArrowBox = styled.div`
   grid-column: 9 / span 1;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+    background-color: #1F2023;
+    color: #DADADA
+}
 `;
 
 const TitleBarDiv = styled.div`
@@ -186,6 +214,7 @@ function App(props) {
   const [end, setEnd] = useState(false);
   const dayString = useMemo(getDayString, []);
   const [guesses, addGuess] = useGuesses(dayString);
+  const [flagLoad, setFlagLoad] = useState(false);
   const trueCountry = useMemo(() => {
     return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
   }, [dayString, countryNames]);
@@ -249,7 +278,14 @@ function App(props) {
               tile: tileNum});
   };
 
-  const countryInfo = props.countryData[trueCountry];
+  const countryInfo = useMemo(() => props.countryData[trueCountry], [trueCountry]);
+
+  const flagImg = useMemo(() => {
+    const img = new Image();
+    img.onload = () => setFlagLoad(true);
+    img.src = `https://flagcdn.com/w320/${countryInfo.code}.png`;
+    return img;
+  }, [countryInfo]);
 
   return (
     <div className='App'>
@@ -275,12 +311,12 @@ function App(props) {
         <Grid end={end}>
           {flippedArray.map((flipped, n) => 
           (
-            <Tile key={n} rotate={flipped ? 1 : 0}>
+            <Tile key={n} rotate={flipped && flagLoad ? 1 : 0} height={FLAG_SCALE*flagImg.height/2}>
               <TileFront></TileFront>
               <TileBack end={end}><FlagImage
-                flag={`https://flagcdn.com/w320/${countryInfo.code}.png`}
+                flag={flagImg.src}
                 left={`-${(n%3)*64}px`}
-                top={`-${Math.floor(n/3)*64}px`}
+                top={`-${Math.floor(n/3)*FLAG_SCALE*flagImg.height/2}px`}
               >
               </FlagImage></TileBack>
             </Tile>

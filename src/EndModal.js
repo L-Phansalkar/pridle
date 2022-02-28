@@ -7,19 +7,23 @@ import { List, ListItem } from '@mui/material';
 import { getStatsData } from './stats';
 import styled from 'styled-components';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 'auto',
-  maxWidth: '400px',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  justifyContent: 'flex-end'
-};
+const StyledBox = styled(Box)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  max-width: 400px;
+  background-color: #fff;
+  border: 2px solid #000;
+  box-shadow: 24rem;
+  padding: 2em;
+  justify-content: flex-start;
+  @media (prefers-color-scheme: dark) {
+    background-color: #121212;
+    color: white;
+  }
+`;
 
 const StatNumber = styled.div`
   font-weight: bold;
@@ -40,7 +44,7 @@ const StatsTile = ({stat, text}) => (
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4,minmax(5rem, 8rem));
   grid-template-rows: auto 1fr;
 `;
 
@@ -50,6 +54,23 @@ const StatsButton = styled.button`
   font-size: 2rem;
   cursor: pointer;
   margin-top: 0.6rem;
+`;
+
+const StyledModal = styled(Modal)`
+  @media (prefers-color-scheme: dark) {
+    color: #000;
+  }
+`;
+
+const DistBar = styled.div`
+  flex: 0 1 ${props => (Math.round((props.count / props.maxDistribution) * 100))}%;
+  background-color: #ddd;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-left: 0.5rem;
+  @media (prefers-color-scheme: dark) {
+    color: #000;
+  }
 `;
 
 export function EndModal({ end, score, guesses, maxAttempts }) {
@@ -72,13 +93,14 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
   return (
     <div>
       <StatsButton onClick={handleOpen}>📈</StatsButton> 
-      <Modal
+      <StyledModal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <StyledBox>
+
           <Typography id="modal-modal-title" variant="h5" component="h2">
             Statistics
           </Typography>
@@ -95,15 +117,10 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
             {Object.entries(guessDistribution).map(([index, count]) => (
               <ListItem sx={{paddingBottom: 0}}>
                 <div>{index}</div>
-                <div
-                  style={{
-                    flex: `0 1 ${Math.round((count / maxDistribution) * 100)}%`,
-                    backgroundColor: '#ddd',
-                    padding: '2px 5px',
-                    borderRadius: '3px',
-                    marginLeft: '0.5rem'
-                  }}
-                >{count}</div>
+                <DistBar
+                  count={count}
+                  maxDistribution={maxDistribution}
+                >{count}</DistBar>
               </ListItem>
             ))}
           </List>
@@ -115,8 +132,8 @@ export function EndModal({ end, score, guesses, maxAttempts }) {
             >
             </Share>
           </Typography>
-        </Box>
-      </Modal>
+        </StyledBox>
+      </StyledModal>
     </div>
   );
 }

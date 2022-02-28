@@ -7,6 +7,7 @@ const StyledSelect = styled(Select)`
   font-family: Courier, monospace;
   margin-bottom: 1rem;
   min-width: 200px;
+  color: #000;
   :hover{
     border-color: #123456;
   }
@@ -40,7 +41,6 @@ const AnswerBox = ({ answer, onCorrect, onIncorrect, disabled, countries, onGues
       options={countries.map(val => ({label: val, value: val }))} 
       onChange={handleSubmit}
       placeholder="Guess the flag!"
-      autoFocus
       isOptionDisabled={() => disabled}
     />
   );
