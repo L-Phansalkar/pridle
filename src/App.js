@@ -8,7 +8,8 @@ import seedrandom from 'seedrandom';
 import { DateTime } from "luxon";
 import { useGuesses } from './hooks/useGuesses';
 import { ToastContainer, Flip } from "react-toastify";
-import { EndModal } from "./EndModal";
+import { StatsModal } from "./StatsModal";
+import { HowToModal } from './HowToModal';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
 
@@ -197,6 +198,7 @@ const ArrowBox = styled.div`
 const TitleBarDiv = styled.div`
   display: flex;
   align-items: center;
+  justify-content: ${props => props.justify};
 `;
 
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
@@ -297,15 +299,18 @@ function App(props) {
       />
       <CentreWrapper>
         <TitleBar>
-          <TitleBarDiv></TitleBarDiv>
+          <TitleBarDiv justify="flex-end">
+            <HowToModal>
+            </HowToModal>
+          </TitleBarDiv>
           <Title>FLAG<span>LE</span></Title>
           <TitleBarDiv>
-          <EndModal end={end}
+          <StatsModal end={end}
                     score={score} 
                     guesses={guesses}
                     maxAttempts={props.attempts}
           >
-          </EndModal>
+          </StatsModal>
           </TitleBarDiv>
         </TitleBar>
         <Grid end={end}>

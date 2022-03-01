@@ -51,9 +51,10 @@ const Grid = styled.div`
 const StatsButton = styled.button`
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.6rem;
   cursor: pointer;
   margin-top: 0.6rem;
+  padding: 1px 10px;
 `;
 
 const StyledModal = styled(Modal)`
@@ -73,7 +74,7 @@ const DistBar = styled.div`
   }
 `;
 
-export function EndModal({ end, score, guesses, maxAttempts }) {
+export function StatsModal({ end, score, guesses, maxAttempts }) {
   const [open, setOpen] = useState(end);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
