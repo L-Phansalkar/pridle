@@ -12,11 +12,8 @@ import { StatsModal } from "./StatsModal";
 import { HowToModal } from './HowToModal';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
-
-
-const DELAY_TIME = 0.5;
-const FLAG_WIDTH = 192;
-const FLAG_SCALE = FLAG_WIDTH/320;
+import { FlagGrid } from './FlagGrid';
+import { Guesses } from './Guesses';
 
 const CentreWrapper = styled.div`
   margin: 0;
@@ -35,73 +32,7 @@ const CentreWrapper = styled.div`
 }
 `;
 
-const Grid = styled.div`
-  transition: 1s;
-  transition-delay: ${DELAY_TIME}s;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto 1fr;
-  margin-bottom: 1rem;
-  grid-gap: ${props => props.end ? "0px" : "2px"};
-  z-index: ${props => props.end ? 2 : 1};
-`;
-
-const TitleBar = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto 1fr;
-  margin-bottom: 1rem;
-  @media (prefers-color-scheme: dark) {
-    color: #fff;
-  }
-`;
-
-const TileFront = styled.div`
-  width:100%;
-  height:100%;
-  justify-content: center;
-  background: #dddddd;
-  backface-visibility: hidden;
-  position: absolute;
-  top:0;
-`;
-
-const TileBack = styled.div`
-  transition: 1s;
-  transition-delay: ${DELAY_TIME}s;
-  width:100%;
-  height:100%;
-  justify-content: center;
-  background: #ffffff;
-  backface-visibility: hidden;
-  position: absolute;
-  transform: rotateY(180deg);
-  top:0;
-  overflow: hidden;
-  @media (prefers-color-scheme: dark) {
-    background: #121212;
-  }
-`;
-
-const Tile = styled.div`
-  transition: 1s;
-  transform-style: preserve-3d;
-  display:flex; 
-  justify-content: center;
-  padding: ${props => props.height ? `${props.height/2}px` : "2rem"} 2rem;
-  position: relative;
-  transform: ${props => props.rotate ? "rotateY(180deg)" : "rotateY(0deg)"};
-`;
-
-const FlagImage = styled.img`
-  content: url(${props => props.flag});
-  position: relative;
-  width: ${FLAG_WIDTH}px;
-  left: ${props => props.left};
-  top: ${props => props.top};
-`;
-
-const Results = styled(({ score, attempts, max, ...props }) => (
+const Attempts = styled(({ score, attempts, max, ...props }) => (
   <div {...props}>
     Attempts: <span>{attempts}/{max}</span>
   </div>
@@ -115,15 +46,6 @@ const Results = styled(({ score, attempts, max, ...props }) => (
   @media (prefers-color-scheme: dark) {
     color: #fff;
 }
-`;
-
-const Title = styled.div`
-  display: block;
-  font-size: 4rem;
-  margin-top: 0.5rem;
-  span {
-    color: #1a76d2;
-  }
 `;
 
 const Footer = styled.div`
@@ -142,63 +64,29 @@ const Footer = styled.div`
   }
 `;
 
-const GuessLine = styled.div`
-  display: grid;
-  grid-template-columns: repeat(9, minmax(30px, 2.5rem));
-  margin: 0px 2px 2px 2px;
-`;
-
-const CountryGuess = styled.div`
-  display:flex; 
-  position: relative;
-  background-color: #dddddd;
-  border-radius: 3px;
-  grid-column: 1 / span 6;
-  margin-right: 2px;
-  text-overflow: ellipsis;
-  align-items: center;
-  justify-content: center;
-  @media (prefers-color-scheme: dark) {
-    background-color: #1F2023;
-    color: #DADADA
-}
-`;
-
-const DistanceBox = styled.div`
-  display:flex; 
-  position: relative;
-  background-color: #dddddd;
-  border-radius: 3px;
-  grid-column: 7 / span 2;
-  font-weight: bold;
-  margin-right: 2px;
-  align-items: center;
-  justify-content: center;
-  @media (prefers-color-scheme: dark) {
-    background-color: #1F2023;
-    color: #DADADA
-}
-`;
-
-const ArrowBox = styled.div`
-  display:flex; 
-  padding:0.25rem;
-  position: relative;
-  background-color: #dddddd;
-  border-radius: 3px;
-  grid-column: 9 / span 1;
-  align-items: center;
-  justify-content: center;
-  @media (prefers-color-scheme: dark) {
-    background-color: #1F2023;
-    color: #DADADA
-}
-`;
-
 const TitleBarDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${props => props.justify};
+`;
+
+const TitleBar = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr;
+  margin-bottom: 1rem;
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+  }
+`;
+
+const Title = styled.div`
+  display: block;
+  font-size: 4rem;
+  margin-top: 0.5rem;
+  span {
+    color: #1a76d2;
+  }
 `;
 
 const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
@@ -216,7 +104,6 @@ function App(props) {
   const [end, setEnd] = useState(false);
   const dayString = useMemo(getDayString, []);
   const [guesses, addGuess] = useGuesses(dayString);
-  const [flagLoad, setFlagLoad] = useState(false);
   const trueCountry = useMemo(() => {
     return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
   }, [dayString, countryNames]);
@@ -282,20 +169,13 @@ function App(props) {
 
   const countryInfo = useMemo(() => props.countryData[trueCountry], [trueCountry]);
 
-  const flagImg = useMemo(() => {
-    const img = new Image();
-    img.onload = () => setFlagLoad(true);
-    img.src = `https://flagcdn.com/w320/${countryInfo.code}.png`;
-    return img;
-  }, [countryInfo]);
-
   return (
     <div className='App'>
       <ToastContainer
-          hideProgressBar
-          position="top-center"
-          transition={Flip}
-          autoClose={false}
+        hideProgressBar
+        position="top-center"
+        transition={Flip}
+        autoClose={false}
       />
       <CentreWrapper>
         <TitleBar>
@@ -305,46 +185,33 @@ function App(props) {
           </TitleBarDiv>
           <Title>FLAG<span>LE</span></Title>
           <TitleBarDiv>
-          <StatsModal end={end}
-                    score={score} 
-                    guesses={guesses}
-                    maxAttempts={props.attempts}
-          >
-          </StatsModal>
+            <StatsModal end={end}
+              score={score}
+              guesses={guesses}
+              maxAttempts={props.attempts}
+            >
+            </StatsModal>
           </TitleBarDiv>
         </TitleBar>
-        <Grid end={end}>
-          {flippedArray.map((flipped, n) => 
-          (
-            <Tile key={n} rotate={flipped && flagLoad ? 1 : 0} height={FLAG_SCALE*flagImg.height/2}>
-              <TileFront></TileFront>
-              <TileBack end={end}><FlagImage
-                flag={flagImg.src}
-                left={`-${(n%3)*64}px`}
-                top={`-${Math.floor(n/3)*FLAG_SCALE*flagImg.height/2}px`}
-              >
-              </FlagImage></TileBack>
-            </Tile>
-          ))}
-        </Grid>
-      <AnswerBox
-        answer={trueCountry}
-        onCorrect={() => {}}
-        onIncorrect={onIncorrect}
-        disabled={end}
-        countries={Object.keys(props.countryData)}
-        onGuess={onGuess}
-      />
-      <Results score={score} attempts={guesses.length} max={props.attempts}/>
-        {guesses.map((guess, index) => 
-          (
-            <GuessLine>
-              <CountryGuess>{guess.name}</CountryGuess>
-              <DistanceBox>{formatDistance(guess.distance)} </DistanceBox>
-              <ArrowBox>{getDirectionEmoji(guess)}</ArrowBox>
-            </GuessLine>
-          ))}
-          <Footer>️❤️ FLAG<span>LE</span>? <a href="https://www.buymeacoffee.com/ryanbarouki">Buy me a ☕👀?</a></Footer>
+        <FlagGrid
+          end={end}
+          countryInfo={countryInfo}
+          flippedArray={flippedArray}
+        >
+        </FlagGrid>
+        <AnswerBox
+          answer={trueCountry}
+          onCorrect={() => { }}
+          onIncorrect={onIncorrect}
+          disabled={end}
+          countries={Object.keys(props.countryData)}
+          onGuess={onGuess}
+        />
+        <Attempts score={score} attempts={guesses.length} max={props.attempts} />
+        <Guesses
+          guesses={guesses}
+        />
+        <Footer>️❤️ FLAG<span>LE</span>? <a href="https://www.buymeacoffee.com/ryanbarouki">Buy me a ☕👀?</a></Footer>
       </CentreWrapper>
     </div>
   );

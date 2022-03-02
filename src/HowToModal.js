@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Share } from "./Share";
 import { List, ListItem } from '@mui/material';
-import { getStatsData } from './stats';
 import styled from 'styled-components';
+import { FlagGrid } from './FlagGrid';
+import { Guesses } from './Guesses';
+import countryData from './countries';
+import { getDistance, getCompassDirection } from 'geolib';
 
 const StyledBox = styled(Box)`
   position: absolute;
@@ -25,17 +27,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const StatNumber = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-`;
-
-const StatText = styled.div`
-  text-align: center;
-`;
-
-const StatsButton = styled.button`
+const Button = styled.button`
   background: none;
   border: none;
   font-size: 2rem;
@@ -49,15 +41,30 @@ const StyledModal = styled(Modal)`
   }
 `;
 
+const CenterDiv = styled.div`
+  display: ${props => props.display};
+  justify-content: center;
+`;
 
-export function HowToModal({ end, score, guesses, maxAttempts }) {
+export function HowToModal(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const exampleGuesses = ["Mexico", "Haiti", "Peru", "Chile"];
+  const exampleTarget = "Chile";
+  const {code:answerCode, ...answerGeo} = countryData[exampleTarget];
+  const guesses = exampleGuesses.map(name => {
+    const {code:guessCode, ...guessGeo} = countryData[name];
+    return {name: name,
+            distance: getDistance(guessGeo, answerGeo),
+            direction: getCompassDirection(guessGeo, answerGeo)
+          }
+  })
+
   return (
     <div>
-      <StatsButton onClick={handleOpen}>❓</StatsButton> 
+      <Button onClick={handleOpen}>❓</Button>
       <StyledModal
         open={open}
         onClose={handleClose}
@@ -66,12 +73,42 @@ export function HowToModal({ end, score, guesses, maxAttempts }) {
       >
         <StyledBox>
           <Typography id="modal-modal-title" variant="h5" component="h2">
-              How to play!
+            How to play!
           </Typography>
-          <Typography id="modal-modal-title" component="p">
-            Simply guess the flag in 6 guesses or less!
-            Each time you guess it will reveal another portion of the flag and give you a geographical hint.
+          <Typography id="modal-modal-paragraph" component="p">
+            Guess the flag in 6 guesses or less!
           </Typography>
+          <Typography id="modal-modal-paragraph" component="p">
+            Each time you make a guess it will reveal another portion of the flag and give you a geographical hint.
+          </Typography>
+          <br/>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Example:
+          </Typography>
+          <CenterDiv display="flex">
+            <FlagGrid
+              end={false}
+              flippedArray={[true, true, false, false, true, false]}
+              countryInfo={{ code: answerCode }}
+            >
+            </FlagGrid>
+          </CenterDiv>
+          <CenterDiv display="grid">
+            <Guesses
+              guesses={guesses.slice(0, -1)} 
+            />
+          </CenterDiv>
+          <br/>
+          <Typography id="modal-modal-paragraph" component="p">
+            The hint tells you how far away your guess was and the arrow points towards the target country.
+          </Typography>
+          <Typography id="modal-modal-paragraph" component="p">
+            The answer in this case was:
+          </Typography>
+          <br/>
+          <Guesses
+            guesses={guesses.slice(-1)} 
+          />
         </StyledBox>
       </StyledModal>
     </div>
