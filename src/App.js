@@ -83,7 +83,6 @@ const TitleBar = styled.div`
 const Title = styled.div`
   display: block;
   font-size: 4rem;
-  margin-top: 0.5rem;
   span {
     color: #1a76d2;
   }

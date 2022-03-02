@@ -8,6 +8,9 @@ import { FlagGrid } from './FlagGrid';
 import { Guesses } from './Guesses';
 import countryData from './countries';
 import { getDistance, getCompassDirection } from 'geolib';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const StyledBox = styled(Box)`
   position: absolute;
@@ -30,7 +33,7 @@ const StyledBox = styled(Box)`
 const Button = styled.button`
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.6rem;
   cursor: pointer;
   margin-top: 0.6rem;
 `;
@@ -44,6 +47,13 @@ const StyledModal = styled(Modal)`
 const CenterDiv = styled.div`
   display: ${props => props.display};
   justify-content: center;
+`;
+
+const HelpIcon = styled(HelpOutlineIcon)`
+  color: black;
+  @media (prefers-color-scheme: dark) {
+    color: white;
+  }
 `;
 
 export function HowToModal(props) {
@@ -64,7 +74,7 @@ export function HowToModal(props) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>❓</Button>
+      <Button onClick={handleOpen}><HelpIcon/></Button>
       <StyledModal
         open={open}
         onClose={handleClose}
@@ -72,6 +82,16 @@ export function HowToModal(props) {
         aria-describedby="modal-modal-description"
       >
         <StyledBox>
+          <Box>
+            <IconButton onClick={handleClose} sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Typography id="modal-modal-title" variant="h5" component="h2">
             How to play!
           </Typography>
@@ -81,7 +101,7 @@ export function HowToModal(props) {
           <Typography id="modal-modal-paragraph" component="p">
             Each time you make a guess it will reveal another portion of the flag and give you a geographical hint.
           </Typography>
-          <br/>
+          <br />
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Example:
           </Typography>
@@ -95,20 +115,22 @@ export function HowToModal(props) {
           </CenterDiv>
           <CenterDiv display="grid">
             <Guesses
-              guesses={guesses.slice(0, -1)} 
+              guesses={guesses.slice(0, -1)}
             />
           </CenterDiv>
-          <br/>
+          <br />
           <Typography id="modal-modal-paragraph" component="p">
             The hint tells you how far away your guess was and the arrow points towards the target country.
           </Typography>
           <Typography id="modal-modal-paragraph" component="p">
             The answer in this case was:
           </Typography>
-          <br/>
-          <Guesses
-            guesses={guesses.slice(-1)} 
-          />
+          <br />
+          <CenterDiv display="grid">
+            <Guesses
+              guesses={guesses.slice(-1)}
+            />
+          </CenterDiv>
         </StyledBox>
       </StyledModal>
     </div>

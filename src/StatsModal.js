@@ -6,6 +6,9 @@ import { Share } from "./Share";
 import { List, ListItem } from '@mui/material';
 import { getStatsData } from './stats';
 import styled from 'styled-components';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 
 const StyledBox = styled(Box)`
   position: absolute;
@@ -74,6 +77,13 @@ const DistBar = styled.div`
   }
 `;
 
+const LeaderboardIconStyled = styled(LeaderboardIcon)`
+  color: black;
+  @media (prefers-color-scheme: dark) {
+    color: white;;
+  }
+`;
+
 export function StatsModal({ end, score, guesses, maxAttempts }) {
   const [open, setOpen] = useState(end);
   const handleOpen = () => setOpen(true);
@@ -93,7 +103,9 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
 
   return (
     <div>
-      <StatsButton onClick={handleOpen}>📈</StatsButton> 
+      <StatsButton onClick={handleOpen}>
+        <LeaderboardIconStyled/>
+      </StatsButton> 
       <StyledModal
         open={open}
         onClose={handleClose}
@@ -101,7 +113,16 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
         aria-describedby="modal-modal-description"
       >
         <StyledBox>
-
+          <Box>
+            <IconButton onClick={handleClose} sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Typography id="modal-modal-title" variant="h5" component="h2">
             Statistics
           </Typography>
