@@ -39,6 +39,7 @@ const Button = styled.button`
 `;
 
 const StyledModal = styled(Modal)`
+  overflow: auto;
   @media (prefers-color-scheme: dark) {
     color: #000;
   }

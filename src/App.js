@@ -210,7 +210,7 @@ function App(props) {
         <Guesses
           guesses={guesses}
         />
-        <Footer>️❤️ FLAG<span>LE</span>? <a href="https://www.buymeacoffee.com/ryanbarouki">Buy me a ☕👀?</a></Footer>
+        <Footer>🇺🇦 <a href="https://crisisrelief.un.org/t/ukraine">Ukraine Humanitarian Fund</a> ️❤️</Footer>
       </CentreWrapper>
     </div>
   );
