@@ -18,7 +18,10 @@ const StyledBox = styled(Box)`
   left: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  max-width: 400px;
+  height: auto;
+  max-width: 350px;
+  max-height: 400px;
+  overflow: auto;
   background-color: #fff;
   border: 2px solid #000;
   box-shadow: 24rem;
@@ -39,7 +42,7 @@ const Button = styled.button`
 `;
 
 const StyledModal = styled(Modal)`
-  overflow: auto;
+  /* overflow: auto; */
   @media (prefers-color-scheme: dark) {
     color: #000;
   }
