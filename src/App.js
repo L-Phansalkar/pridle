@@ -56,6 +56,10 @@ const Footer = styled.div`
   span {
     color: #1a76d2;
   }
+  p {
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+  }
   @media (prefers-color-scheme: dark) {
     color: #fff;
     a {
@@ -211,7 +215,7 @@ function App(props) {
           guesses={guesses}
         />
         <Footer>🇺🇦 <a href="https://crisisrelief.un.org/t/ukraine">Ukraine Humanitarian Fund</a> ️❤️
-        <p>Flagle is getting popular ❤️ <a href="https://www.buymeacoffee.com/ryanbarouki">Help me keep it alive!</a></p>
+        <p>Flagle is getting popular ❤️ </p> <a href="https://www.buymeacoffee.com/ryanbarouki">Help me keep it alive!</a>
         </Footer>
       </CentreWrapper>
     </div>
