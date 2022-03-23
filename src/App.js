@@ -14,10 +14,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
 import { FlagGrid } from './FlagGrid';
 import { Guesses } from './Guesses';
-import ReactGA from 'react-ga';
-
-ReactGA.initialize('G-V420SMFFK0');
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 const CentreWrapper = styled.div`
   margin: 0;
