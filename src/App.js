@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { useState, useMemo, useEffect } from "react";
 import styled from "styled-components";

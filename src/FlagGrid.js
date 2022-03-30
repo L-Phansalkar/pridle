@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { useMemo, useState } from "react";
 import flagData from "./flagData";
@@ -86,9 +87,8 @@ export function FlagGrid({ end, prideInfo, flippedArray }) {
             <FlagImage
               flag={flagImg.src}
               left={`-${(n % 3) * 64}px`}
-              top={`-${
-                (Math.floor(n / 3) * FLAG_SCALE * flagImg.height) / 2
-              }px`}
+              top={`-${(Math.floor(n / 3) * FLAG_SCALE * flagImg.height) /
+                2}px`}
             ></FlagImage>
           </TileBack>
         </Tile>
