@@ -1,2 +1,2 @@
 # pridle
-index.json
+index.js
