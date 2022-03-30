@@ -1,19 +1,15 @@
-import './App.css';
+import "./App.css";
 import { useState, useMemo, useEffect } from "react";
-import styled from 'styled-components';
-import AnswerBox from './AnswerBox';
-import { getDistance, getCompassDirection } from "geolib";
-import { formatDistance, getDirectionEmoji } from './geography';
-import seedrandom from 'seedrandom';
+import styled from "styled-components";
+import AnswerBox from "./AnswerBox";
+import seedrandom from "seedrandom";
 import { DateTime } from "luxon";
-import { useGuesses } from './hooks/useGuesses';
+import { useGuesses } from "./hooks/useGuesses";
 import { ToastContainer, Flip } from "react-toastify";
-import { StatsModal } from "./StatsModal";
-import { HowToModal } from './HowToModal';
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { FlagGrid } from './FlagGrid';
-import { Guesses } from './Guesses';
+import { FlagGrid } from "./FlagGrid";
+import { Guesses } from "./Guesses";
 
 const CentreWrapper = styled.div`
   margin: 0;
@@ -25,16 +21,19 @@ const CentreWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
 
   @media (prefers-color-scheme: dark) {
     background-color: #121212;
-}
+  }
 `;
 
 const Attempts = styled(({ score, attempts, max, ...props }) => (
   <div {...props}>
-    Attempts: <span>{attempts}/{max}</span>
+    Attempts:{" "}
+    <span>
+      {attempts}/{max}
+    </span>
   </div>
 ))`
   display: block;
@@ -45,7 +44,7 @@ const Attempts = styled(({ score, attempts, max, ...props }) => (
   }
   @media (prefers-color-scheme: dark) {
     color: #fff;
-}
+  }
 `;
 
 const Footer = styled.div`
@@ -63,7 +62,7 @@ const Footer = styled.div`
   @media (prefers-color-scheme: dark) {
     color: #fff;
     a {
-      color: #fff
+      color: #fff;
     }
   }
 `;
@@ -71,7 +70,7 @@ const Footer = styled.div`
 const TitleBarDiv = styled.div`
   display: flex;
   align-items: center;
-  justify-content: ${props => props.justify};
+  justify-content: ${(props) => props.justify};
 `;
 
 const TitleBar = styled.div`
@@ -92,7 +91,7 @@ const Title = styled.div`
   }
 `;
 
-const shuffle = arr => [...arr].sort(() => 0.5 - Math.random());
+const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
 
 const getDayString = () => {
   const date = DateTime.now().toFormat("yyyy-MM-dd");
@@ -100,54 +99,82 @@ const getDayString = () => {
 };
 
 function App(props) {
-  const [countryNames, setFlagNames] = useState(() => props.DEBUG ? shuffle(Object.keys(props.countryData)) : Object.keys(props.countryData));
+  console.log("props", props);
+  const [flagNames] = useState(() =>
+    props.DEBUG
+      ? shuffle(Object.keys(props.flagData))
+      : Object.keys(props.flagData)
+  );
   const [score, setScore] = useState("DNF");
-  const [flippedArray, setFlippedArray] = useState([false, false, false, false, false, false]);
-  const [randomOrder, setRandomOrder] = useState(() => shuffle([0,1,2,3,4,5]));
+  const [flippedArray, setFlippedArray] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [randomOrder, setRandomOrder] = useState(() =>
+    shuffle([0, 1, 2, 3, 4, 5])
+  );
   const [end, setEnd] = useState(false);
   const dayString = useMemo(getDayString, []);
   const [guesses, addGuess] = useGuesses(dayString);
-  const trueCountry = useMemo(() => {
-    return countryNames[Math.floor(seedrandom.alea(dayString)() * countryNames.length)];
-  }, [dayString, countryNames]);
+  const trueName = useMemo(() => {
+    return flagNames[
+      Math.floor(seedrandom.alea(dayString)() * flagNames.length)
+    ];
+  }, [dayString, flagNames]);
+  console.log("TN", trueName);
 
   useEffect(() => {
     revealTiles();
     getRemainingTiles();
-    if (guesses.length >= props.attempts || guesses[guesses.length - 1]?.distance === 0) {
+    //console.log("guesses", guesses[guesses.length - 1].name);
+    if (
+      guesses.length >= props.attempts ||
+      (guesses.length >= 1 && guesses[guesses.length - 1].name === trueName)
+    ) {
       setEnd(true);
       setFlippedArray([true, true, true, true, true, true]);
-      if (guesses[guesses.length - 1].distance === 0) {
-        toast(`🎉 ${trueCountry} 🎉`);
-        setScore(guesses.lenght);
+      if (guesses[guesses.length - 1].name === trueName) {
+        toast(`🎉 ${trueName} 🎉`);
+        setScore(guesses.length);
       } else {
-        toast(`🤔 ${trueCountry} 🤔`);
+        toast(`🤔 ${trueName} 🤔`);
         setScore("DNF");
       }
-    } 
+    }
   }, [guesses]);
 
   const onIncorrect = () => {
     revealRandomTile();
   };
+  const onCorrect = () => {
+    revealRandomTile();
+  };
 
   const revealRandomTile = () => {
     const [tile] = randomOrder;
-    setRandomOrder(randomOrder.length > 1 ? randomOrder.slice(1) : shuffle([0,1,2,3,4,5]));
+    setRandomOrder(
+      randomOrder.length > 1
+        ? randomOrder.slice(1)
+        : shuffle([0, 1, 2, 3, 4, 5])
+    );
     const newFlipped = flippedArray.slice();
     newFlipped[tile] = true;
     setFlippedArray(newFlipped);
     return tile;
   };
-  
+
   const getRemainingTiles = () => {
     const remainingTiles = [];
-    const usedTiles = guesses.map(guess => guess.tile);
-    for (const i of [0,1,2,3,4,5]) {
-        if (!usedTiles.includes(i)) {
-          remainingTiles.push(i);
-        }
+    const usedTiles = guesses.map((guess) => guess.tile);
+    for (const i of [0, 1, 2, 3, 4, 5]) {
+      if (!usedTiles.includes(i)) {
+        remainingTiles.push(i);
       }
+    }
     setRandomOrder(shuffle(remainingTiles));
     return remainingTiles;
   };
@@ -160,20 +187,16 @@ function App(props) {
     }
   };
 
-  const onGuess = guess => {
+  const onGuess = (guess) => {
     const tileNum = revealRandomTile();
-    const {code:guessCode, ...guessGeo} = props.countryData[guess];
-    const {code:answerCode, ...answerGeo} = props.countryData[trueCountry];
-    addGuess({name: guess,
-              distance: getDistance(guessGeo, answerGeo),
-              direction: getCompassDirection(guessGeo, answerGeo),
-              tile: tileNum});
+    const { code: guessCode } = props.flagData[guess];
+    const { code: answerCode } = props.flagData[trueName];
+    addGuess({ name: guess, tile: tileNum });
   };
 
-  const countryInfo = useMemo(() => props.countryData[trueCountry], [trueCountry]);
-
+  const prideInfo = useMemo(() => props.flagData[trueName], [trueName]);
   return (
-    <div className='App'>
+    <div className="App">
       <ToastContainer
         hideProgressBar
         position="top-center"
@@ -182,41 +205,32 @@ function App(props) {
       />
       <CentreWrapper>
         <TitleBar>
-          <TitleBarDiv justify="flex-end">
-            <HowToModal>
-            </HowToModal>
-          </TitleBarDiv>
-          <Title>FLAG<span>LE</span></Title>
-          <TitleBarDiv>
-            <StatsModal end={end}
-              score={score}
-              guesses={guesses}
-              maxAttempts={props.attempts}
-            >
-            </StatsModal>
-          </TitleBarDiv>
+          <TitleBarDiv justify="flex-end"></TitleBarDiv>
+          <Title>
+            PRI<span>DLE</span>
+          </Title>
+          <TitleBarDiv></TitleBarDiv>
         </TitleBar>
         <FlagGrid
-          end={end}
-          countryInfo={countryInfo}
+          $end={end}
+          prideInfo={prideInfo}
           flippedArray={flippedArray}
-        >
-        </FlagGrid>
+        ></FlagGrid>
         <AnswerBox
-          answer={trueCountry}
-          onCorrect={() => { }}
+          answer={trueName}
+          onCorrect={() => {}}
           onIncorrect={onIncorrect}
           disabled={end}
-          countries={Object.keys(props.countryData)}
+          flags={Object.keys(props.flagData)}
           onGuess={onGuess}
         />
-        <Attempts score={score} attempts={guesses.length} max={props.attempts} />
-        <Guesses
-          guesses={guesses}
+        <Attempts
+          score={score}
+          attempts={guesses.length}
+          max={props.attempts}
         />
-        <Footer>🇺🇦 <a href="https://crisisrelief.un.org/t/ukraine">Ukraine Humanitarian Fund</a> ️❤️
-        <p>Flagle is getting popular ❤️ </p> <a href="https://www.buymeacoffee.com/ryanbarouki">Help me keep it alive!</a>
-        </Footer>
+        <Guesses guesses={guesses} />
+        <Footer>"it's like Worldle but gay"</Footer>
       </CentreWrapper>
     </div>
   );

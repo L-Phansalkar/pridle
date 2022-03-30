@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { Share } from "./Share";
-import { List, ListItem } from '@mui/material';
-import { getStatsData } from './stats';
-import styled from 'styled-components';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { List, ListItem } from "@mui/material";
+import { getStatsData } from "./stats";
+import styled from "styled-components";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 
 const StyledBox = styled(Box)`
   position: absolute;
@@ -38,16 +37,23 @@ const StatText = styled.div`
   text-align: center;
 `;
 
-const StatsTile = ({stat, text}) => (
-  <Box sx={{ p: 1, borderRadius: '3px', m: '0rem 0.25rem', justifyContent: 'center'}}>
+const StatsTile = ({ stat, text }) => (
+  <Box
+    sx={{
+      p: 1,
+      borderRadius: "3px",
+      m: "0rem 0.25rem",
+      justifyContent: "center",
+    }}
+  >
     <StatNumber>{stat}</StatNumber>
     <StatText>{text}</StatText>
   </Box>
-)
+);
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4,minmax(5rem, 8rem));
+  grid-template-columns: repeat(4, minmax(5rem, 8rem));
   grid-template-rows: auto 1fr;
 `;
 
@@ -67,7 +73,8 @@ const StyledModal = styled(Modal)`
 `;
 
 const DistBar = styled.div`
-  flex: 0 1 ${props => (Math.round((props.count / props.maxDistribution) * 100))}%;
+  flex: 0 1
+    ${(props) => Math.round((props.count / props.maxDistribution) * 100)}%;
   background-color: #ddd;
   padding: 2px 5px;
   border-radius: 3px;
@@ -80,7 +87,7 @@ const DistBar = styled.div`
 const LeaderboardIconStyled = styled(LeaderboardIcon)`
   color: black;
   @media (prefers-color-scheme: dark) {
-    color: white;;
+    color: white;
   }
 `;
 
@@ -89,13 +96,8 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const {
-    played,
-    winRatio,
-    currentStreak,
-    maxStreak,
-    guessDistribution,
-  } = getStatsData();
+  const { played, winRatio, currentStreak, maxStreak, guessDistribution } =
+    getStatsData();
 
   const maxDistribution = Math.max(...Object.values(guessDistribution));
 
@@ -104,8 +106,8 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
   return (
     <div>
       <StatsButton onClick={handleOpen}>
-        <LeaderboardIconStyled/>
-      </StatsButton> 
+        <LeaderboardIconStyled />
+      </StatsButton>
       <StyledModal
         open={open}
         onClose={handleClose}
@@ -114,12 +116,15 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
       >
         <StyledBox>
           <Box>
-            <IconButton onClick={handleClose} sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}>
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -127,33 +132,25 @@ export function StatsModal({ end, score, guesses, maxAttempts }) {
             Statistics
           </Typography>
           <Grid>
-            <StatsTile stat={Math.round(winRatio * 100)} text="Win %"/>
-            <StatsTile stat={played} text="Played"/>
-            <StatsTile stat={currentStreak} text="Current Streak"/>
-            <StatsTile stat={maxStreak} text="Max Streak"/>
+            <StatsTile stat={Math.round(winRatio * 100)} text="Win %" />
+            <StatsTile stat={played} text="Played" />
+            <StatsTile stat={currentStreak} text="Current Streak" />
+            <StatsTile stat={maxStreak} text="Max Streak" />
           </Grid>
           <Typography id="modal-modal-title" variant="h6" component="h3">
             Guess Distribution:
           </Typography>
           <List>
             {Object.entries(guessDistribution).map(([index, count]) => (
-              <ListItem sx={{paddingBottom: 0}}>
+              <ListItem sx={{ paddingBottom: 0 }}>
                 <div>{index}</div>
-                <DistBar
-                  count={count}
-                  maxDistribution={maxDistribution}
-                >{count}</DistBar>
+                <DistBar count={count} maxDistribution={maxDistribution}>
+                  {count}
+                </DistBar>
               </ListItem>
             ))}
           </List>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Share score={score}
-                   guesses={guesses} 
-                   attempts={maxAttempts}
-                   end={end}
-            >
-            </Share>
-          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}></Typography>
         </StyledBox>
       </StyledModal>
     </div>
