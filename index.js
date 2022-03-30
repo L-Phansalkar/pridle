@@ -1,2 +1,1 @@
-# pridle
-index.js
+./src/App.js
